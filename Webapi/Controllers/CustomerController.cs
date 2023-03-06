@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Webapi.Data.DataModels;
 using Webapi.Data;
+using Webapi.Data.Repositories.Interfaces;
 
 namespace Webapi.Controllers
 {
@@ -10,11 +11,11 @@ namespace Webapi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly DataContext _dataContext;
+        private readonly ICustomerRepository _customerRepository;
 
-        public CustomerController(DataContext db)
+        public CustomerController(ICustomerRepository customerRepository)
         {
-            _dataContext = db;
+            _customerRepository = customerRepository;
         }
 
         //Hämta alla kunder
@@ -22,7 +23,7 @@ namespace Webapi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Customer>> GetCustomers()
         {
-            var data = _dataContext.Customers.Include(x => x.Address).ToList();
+            var data = _customerRepository.GetAll();
 
             return Ok(data);
         }
