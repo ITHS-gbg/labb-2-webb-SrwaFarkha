@@ -18,6 +18,10 @@ namespace Webapi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Customer>()
+                .HasOne(a => a.Address)
+                .WithOne(a => a.Customer)
+                .HasForeignKey<Address>(c => c.CustomerId);
             base.OnModelCreating(modelBuilder);
         }
     }

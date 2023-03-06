@@ -1,29 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Webapi.Data;
 using Webapi.Data.DataModels;
-using Webapi.Models.Dto;
+using Webapi.Data;
 
 namespace Webapi.Controllers
 {
     //[Route["api/[controller]")]
-    [Route("api/product")]
+    [Route("api/customer")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class CustomerController : ControllerBase
     {
         private readonly DataContext _dataContext;
 
-        public ProductsController(DataContext db)
+        public CustomerController(DataContext db)
         {
             _dataContext = db;
         }
 
-        //Hämta alla produkter
+        //Hämta alla kunder
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Product>> GetProducts()
+        public ActionResult<IEnumerable<Customer>> GetCustomers()
         {
-            var data = _dataContext.Products.ToList();
+            var data = _dataContext.Customers.Include(x => x.Address).ToList();
 
             return Ok(data);
         }
