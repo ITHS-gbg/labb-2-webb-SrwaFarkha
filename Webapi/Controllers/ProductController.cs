@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Webapi.Data;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories.Interfaces;
+using Webapi.Models;
 using Webapi.Models.Dto;
 
 namespace Webapi.Controllers
@@ -54,5 +55,16 @@ namespace Webapi.Controllers
             _productRepository.DeleteProduct(productId);
             return Ok();
         }
+
+
+        //updaterar produkt baserat på id
+        [HttpPut("{productId:int}", Name = "UpdateProduct")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult UpdateProduct(int productId, ProductUpdateModel product)
+        {
+            _productRepository.UpdateProduct(productId, product);
+            return Ok();
+        }
+
     }
 }

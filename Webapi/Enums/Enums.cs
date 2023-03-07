@@ -5,7 +5,7 @@
         public enum Category
         {
             Fruits,
-            vegetables,
+            Vegetables,
             DairyProducts,
             FrozenProducts
         }

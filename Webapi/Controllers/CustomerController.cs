@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Webapi.Data.DataModels;
 using Webapi.Data;
 using Webapi.Data.Repositories.Interfaces;
+using Webapi.Data.Repositories;
+using Webapi.Models;
 
 namespace Webapi.Controllers
 {
@@ -26,6 +28,25 @@ namespace Webapi.Controllers
             var data = _customerRepository.GetAll();
 
             return Ok(data);
+        }
+
+        //Hämtar en kund baserat på mail
+        [HttpGet("{EmailAddress}", Name = "GetCustomer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<Customer> GetByEmailAddress(string EmailAddress)
+        {
+            var data = _customerRepository.GetByEmailAddress(EmailAddress);
+            return Ok(data);
+
+        }
+
+        //updaterar kunden baserat på id
+        [HttpPut("{customerId:int}", Name = "UpdateCustomer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult UpdateCustomer(int customerId, CustomerUpdateModel customer)
+        {
+            _customerRepository.UpdateCustomer(customerId, customer);
+            return Ok();
         }
     }
 }

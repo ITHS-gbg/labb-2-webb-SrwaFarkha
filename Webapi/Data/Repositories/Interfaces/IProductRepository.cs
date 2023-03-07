@@ -1,4 +1,5 @@
 ﻿using Webapi.Data.DataModels;
+using Webapi.Models;
 
 namespace Webapi.Data.Repositories.Interfaces
 {
@@ -10,5 +11,6 @@ namespace Webapi.Data.Repositories.Interfaces
 
         public void CreateProduct(Product product);
         public void DeleteProduct(int id);
+        public void UpdateProduct(int productId, ProductUpdateModel update);
     }
 }

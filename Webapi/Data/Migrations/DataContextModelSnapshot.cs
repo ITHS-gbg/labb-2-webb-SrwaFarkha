@@ -33,19 +33,30 @@ namespace Webapi.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("StreetAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AddressId");
 
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
-
                     b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("Webapi.Data.DataModels.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Webapi.Data.DataModels.Customer", b =>
@@ -55,6 +66,9 @@ namespace Webapi.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -74,6 +88,8 @@ namespace Webapi.Data.Migrations
 
                     b.HasKey("CustomerId");
 
+                    b.HasIndex("AddressId");
+
                     b.ToTable("Customers");
                 });
 
@@ -85,7 +101,7 @@ namespace Webapi.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
-                    b.Property<int>("Category")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Discontinued")
@@ -104,24 +120,31 @@ namespace Webapi.Data.Migrations
 
                     b.HasKey("ProductId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Webapi.Data.DataModels.Address", b =>
-                {
-                    b.HasOne("Webapi.Data.DataModels.Customer", "Customer")
-                        .WithOne("Address")
-                        .HasForeignKey("Webapi.Data.DataModels.Address", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Webapi.Data.DataModels.Customer", b =>
                 {
-                    b.Navigation("Address")
+                    b.HasOne("Webapi.Data.DataModels.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("Webapi.Data.DataModels.Product", b =>
+                {
+                    b.HasOne("Webapi.Data.DataModels.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

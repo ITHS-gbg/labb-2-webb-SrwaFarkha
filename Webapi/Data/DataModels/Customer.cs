@@ -11,6 +11,6 @@ namespace Webapi.Data.DataModels
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
     }
 }
