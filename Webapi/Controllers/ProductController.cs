@@ -23,7 +23,7 @@ namespace Webapi.Controllers
         //Hämta alla produkter
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Product>> GetProducts()
+        public ActionResult<IEnumerable<ProductDto>> GetProducts()
         {
             var data = _productRepository.GetAll();
 
@@ -66,5 +66,7 @@ namespace Webapi.Controllers
             return Ok();
         }
 
+       
     }
+
 }

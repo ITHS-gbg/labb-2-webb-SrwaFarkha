@@ -1,4 +1,6 @@
-﻿namespace Webapi.Models.Dto
+﻿using Webapi.Data.DataModels;
+
+namespace Webapi.Models.Dto
 {
     public class ProductDto
     {
@@ -8,7 +10,7 @@
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
         public decimal Price { get; set; }
-        public Enums.Enums.Category Category { get; set; }
+        public Category Category { get; set; }
         public bool Discontinued { get; set; }
     }
 }

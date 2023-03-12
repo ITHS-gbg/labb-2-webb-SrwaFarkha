@@ -9,5 +9,7 @@ namespace Webapi.Data.Repositories.Interfaces
 
         public Customer GetByEmailAddress(string EmailAddress);
         public void UpdateCustomer(int customerId, CustomerUpdateModel customer);
+        public void CreateCustomer(Customer customer);
+       
     }
 }

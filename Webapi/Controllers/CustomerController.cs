@@ -48,5 +48,18 @@ namespace Webapi.Controllers
             _customerRepository.UpdateCustomer(customerId, customer);
             return Ok();
         }
+
+        //skapar kund
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult CreateCustomer(Customer customer)
+        {
+            _customerRepository.CreateCustomer(customer);
+            return Ok();
+        }
+
+        
+
     }
+
 }

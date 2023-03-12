@@ -1,7 +1,9 @@
-﻿using Webapi.Controllers;
+﻿using Microsoft.EntityFrameworkCore;
+using Webapi.Controllers;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories.Interfaces;
 using Webapi.Models;
+using Webapi.Models.Dto;
 
 namespace Webapi.Data.Repositories
 {
@@ -14,9 +16,21 @@ namespace Webapi.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public List<Product> GetAll()
+        public List<ProductDto> GetAll()
         {
-            var products = _dbContext.Products.ToList();
+            //mappa om products till productDto
+            var products = _dbContext.Products
+                .Include(x => x.Category)
+                .Select(x => new ProductDto
+                {
+                    ProductId = x.ProductId,
+                    ProductName = x.ProductName,
+                    ProductDescription = x.ProductDescription,
+                    Price = x.Price,
+                    Category = x.Category,
+                    Discontinued = x.Discontinued
+                }).ToList();
+
             return products;
         }
 

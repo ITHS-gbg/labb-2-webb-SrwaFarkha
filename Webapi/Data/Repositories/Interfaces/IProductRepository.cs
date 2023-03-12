@@ -1,11 +1,12 @@
 ﻿using Webapi.Data.DataModels;
 using Webapi.Models;
+using Webapi.Models.Dto;
 
 namespace Webapi.Data.Repositories.Interfaces
 {
     public interface IProductRepository
     { 
-        public List<Product> GetAll();
+        public List<ProductDto> GetAll();
 
         public Product GetByName(string name);
 

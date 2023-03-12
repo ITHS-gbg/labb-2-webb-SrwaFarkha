@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories.Interfaces;
 using Webapi.Models;
@@ -39,5 +40,12 @@ namespace Webapi.Data.Repositories
                 _dbContext.SaveChanges();
             }
         }
+
+        public void CreateCustomer(Customer customer)
+        {
+            _dbContext.Customers.Add(customer);
+            _dbContext.SaveChanges();
+        }
+
     }
 }
