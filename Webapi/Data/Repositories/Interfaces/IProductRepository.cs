@@ -6,12 +6,12 @@ namespace Webapi.Data.Repositories.Interfaces
 {
     public interface IProductRepository
     { 
-        public List<ProductDto> GetAll();
-
-        public Product GetByName(string name);
-
-        public void CreateProduct(Product product);
-        public void DeleteProduct(int id);
-        public void UpdateProduct(int productId, ProductUpdateModel update);
+        List<ProductDto> GetAll();
+        Product GetByName(string name);
+        void CreateProduct(CreateProductModel product);
+        void DeleteProduct(int id);
+        void UpdateProduct(int productId, ProductUpdateModel update);
+        List<Category> GetCategories();
+        Category GetCategoryById(int categoryId);
     }
 }

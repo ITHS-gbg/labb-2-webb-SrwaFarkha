@@ -42,7 +42,7 @@ namespace Webapi.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult CreateProduct(Product product)
+        public ActionResult CreateProduct(CreateProductModel product)
         {
             _productRepository.CreateProduct(product);
             return Ok();
@@ -66,7 +66,24 @@ namespace Webapi.Controllers
             return Ok();
         }
 
-       
+        //Hämtar alla categorier
+        [HttpGet("GetCategories")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<Category>> GetCategories()
+        {
+            var data = _productRepository.GetCategories();
+            return Ok(data);
+        }
+
+        //Hämtar category baserat på id
+        [HttpGet("{categoryId:int}", Name = "GetCategoryById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult GetCategoryById(int categoryId)
+        {
+            var data = _productRepository.GetCategoryById(categoryId);
+            return Ok(data);
+        }
+
     }
 
 }

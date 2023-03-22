@@ -40,9 +40,19 @@ namespace Webapi.Data.Repositories
             return product;
         }
 
-        public void CreateProduct(Product product)
+        public void CreateProduct(CreateProductModel product)
         {
-            _dbContext.Products.Add(product);
+            var newProduct = new Product
+            {
+                ProductName = product.ProductName,
+                ProductDescription = product.ProductDescription,
+                Price = product.Price,
+                CategoryId = product.Category.Id,
+                Discontinued = false,
+            };
+
+
+            _dbContext.Products.Add(newProduct);
             _dbContext.SaveChanges();
         }
 
@@ -63,6 +73,30 @@ namespace Webapi.Data.Repositories
                 productFromDb.Price = update.Price;
                 _dbContext.SaveChanges();
             }
+        }
+
+        public List<Category> GetCategories()
+        {
+            var categories = _dbContext.Products
+                .Include(x => x.Category)
+                .Select(x => x.Category)
+                .Distinct()
+                .ToList();
+
+            return categories;
+        }
+
+        public Category GetCategoryById(int categoryId)
+        {
+            var categories = _dbContext.Products
+                .Include(x => x.Category)
+                .Select(x => x.Category)
+                .Distinct()
+                .ToList();
+
+            var filteredCategory = categories.FirstOrDefault(x => x.Id == categoryId);
+
+            return filteredCategory;
         }
     }
 }

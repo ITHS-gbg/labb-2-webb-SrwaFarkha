@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Products";
+}
+<h1>@ViewData["Title"]</h1>
+
+@model IEnumerable<Webapp.Models.ProductModel>
+
+<table class="table table-bordered table-striped table-hover table-sm">
+    <thead class="table-dark">
+    <tr>
+        <th>Product Name</th>
+        <th>Description</th>
+        <th>Price </th>
+        <th>Category</th>
+        <th>Discontinued</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ProductName</td>
+            <td>@item.ProductDescription</td>
+            <td>@item.Price</td>
+            <td>@item.Category.Name</td>
+            <td>@item.Discontinued</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<hr>
+<a asp-action="Create">Lägg till en ny produkt</a>

@@ -1,8 +1,17 @@
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using Webapp.Interfaces;
+using Webapp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<ISrwasButikServices, SrwasButikServices>();
+builder.Services.AddHttpClient<ISrwasButikServices, SrwasButikServices>();
+
+
+//builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

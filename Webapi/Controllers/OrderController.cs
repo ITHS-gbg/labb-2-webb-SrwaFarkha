@@ -40,9 +40,9 @@ namespace Webapi.Controllers
         //spara ordrarna i databasen
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult CreateOrder(newOrderInput newNewOrder)
+        public ActionResult CreateOrder(newOrderInput newOrder)
         {
-            _orderRepository.CreateOrder(newNewOrder);
+            _orderRepository.CreateOrder(newOrder);
             
             return Ok();
         }
