@@ -22,11 +22,16 @@
             <td>@item.ProductName</td>
             <td>@item.ProductDescription</td>
             <td>@item.Price</td>
-            <td>@item.Category.Name</td>
+            <td>@item.CategoryName</td>
             <td>@item.Discontinued</td>
+            <th style="text-align: center;"><a asp-action="Delete" asp-route-productId="@item.ProductId"><i class="btn btn-danger">Delete</i></a></th>
+            <th style="text-align: center;"><a asp-action="Edit" asp-route-productId="@item.ProductId"><i class="btn btn-primary">Edit</i></a></th>
+
         </tr>
     }
+    
     </tbody>
+
 </table>
 
 <hr>

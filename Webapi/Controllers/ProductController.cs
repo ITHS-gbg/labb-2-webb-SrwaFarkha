@@ -33,11 +33,19 @@ namespace Webapi.Controllers
         //Hämtar en product baserat på namn
         [HttpGet("{name}", Name = "GetProduct")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Product> GetProduct(string name)
+        public ActionResult<ProductDto> GetProduct(string name)
         {
             var data = _productRepository.GetByName(name);
             return Ok(data);
+        }
 
+        //Hämtar en product baserat på Id
+        [HttpGet("{productId:int}", Name = "GetProductById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<ProductDto> GetProductById(int productId)
+        {
+            var data = _productRepository.GetById(productId);
+            return Ok(data);
         }
 
         [HttpPost]
@@ -48,7 +56,7 @@ namespace Webapi.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{productId}/delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult DeleteProduct(int productId)
         {
@@ -58,7 +66,7 @@ namespace Webapi.Controllers
 
 
         //updaterar produkt baserat på id
-        [HttpPut("{productId:int}", Name = "UpdateProduct")]
+        [HttpPut("{productId:int}/update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult UpdateProduct(int productId, ProductUpdateModel product)
         {
@@ -76,7 +84,7 @@ namespace Webapi.Controllers
         }
 
         //Hämtar category baserat på id
-        [HttpGet("{categoryId:int}", Name = "GetCategoryById")]
+        [HttpGet("{categoryId:int}/categeory")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult GetCategoryById(int categoryId)
         {

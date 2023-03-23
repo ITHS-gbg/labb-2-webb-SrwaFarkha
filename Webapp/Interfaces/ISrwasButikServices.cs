@@ -6,6 +6,7 @@ namespace Webapp.Interfaces
     {
         Task<List<ProductModel>> GetProducts();
         Task<List<ProductModel>> GetProducts(string name);
+        Task<ProductUpdateModel> GetByProductId(int productId);
         Task<bool> CreateProduct(CreateNewProductModel model);
         Task<bool> DeleteProduct(int id);
         Task<bool> UpdateProduct(int productId, ProductUpdateModel product);

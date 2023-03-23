@@ -74,5 +74,25 @@ namespace Webapp.Controllers
 
             return View("Error");
         }
+
+        public async Task<IActionResult> Delete(int productId)
+        {
+            if (await _srwasButikServices.DeleteProduct(productId)) return RedirectToAction("Index");
+            return View("Error");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int productId)
+        {
+            var product = await _srwasButikServices.GetByProductId(productId);
+            var model = new ProductUpdateModel
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                ProductDescription = product.ProductDescription,
+                Price = product.Price
+            };
+            return View("Edit", model);
+        }
     }
 }

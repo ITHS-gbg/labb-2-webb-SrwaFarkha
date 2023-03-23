@@ -27,17 +27,45 @@ namespace Webapi.Data.Repositories
                     ProductName = x.ProductName,
                     ProductDescription = x.ProductDescription,
                     Price = x.Price,
-                    Category = x.Category,
+                    CategoryName = x.Category.Name,
                     Discontinued = x.Discontinued
                 }).ToList();
 
             return products;
         }
 
-        public Product GetByName(string name)
+        public ProductDto GetByName(string name)
         {
-            var product = _dbContext.Products.FirstOrDefault(x => x.ProductName ==  name);
-            return product;
+            var product = _dbContext.Products.Include(x => x.Category).FirstOrDefault(x => x.ProductName ==  name);
+
+            var productDto = new ProductDto
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                ProductDescription = product.ProductDescription,
+                Price = product.Price,
+                CategoryName = product.Category.Name,
+                Discontinued = product.Discontinued
+            };
+
+            return productDto;
+        }
+
+        public ProductDto GetById(int productId)
+        {
+            var product = _dbContext.Products.Include(x => x.Category).FirstOrDefault(x => x.ProductId == productId);
+
+            var productDto = new ProductDto
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                ProductDescription = product.ProductDescription,
+                Price = product.Price,
+                CategoryName = product.Category.Name,
+                Discontinued = product.Discontinued
+            };
+
+            return productDto;
         }
 
         public void CreateProduct(CreateProductModel product)

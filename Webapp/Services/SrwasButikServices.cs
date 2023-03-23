@@ -86,12 +86,15 @@ namespace Webapp.Services
         }
 
         //Delete product
-        public async Task<bool> DeleteProduct(int id)
+        public async Task<bool> DeleteProduct(int productId)
         {
             try
             {
-                var url = $"{_baseUrl}products/{id}";
-                var response = await _http.DeleteAsync(url);
+                //var url = $"{_baseUrl}product/{productId}";
+
+                _http.BaseAddress = new Uri($"{_baseUrl}");
+
+                var response = await _http.DeleteAsync($"product/{productId}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -281,6 +284,31 @@ namespace Webapp.Services
                 var data = await response.Content.ReadAsStringAsync();
                 var result = JsonSerializer.Deserialize<CategoryModel>(data, _options);
                 return result;
+            }
+            else
+            {
+                throw new Exception("Det gick inget vidare");
+            }
+        }
+
+        public async Task<ProductUpdateModel> GetByProductId(int productId)
+        {
+            var response = await _http.GetAsync($"{_baseUrl}product/{productId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<ProductModel>(data, _options);
+
+                var model = new ProductUpdateModel
+                {
+                    ProductId = result.ProductId,
+                    ProductName = result.ProductName,
+                    ProductDescription = result.ProductDescription,
+                    Price = result.Price
+                };
+                
+                return model;
             }
             else
             {
