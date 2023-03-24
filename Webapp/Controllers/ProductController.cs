@@ -101,6 +101,24 @@ namespace Webapp.Controllers
                 return View("Error");
             }
         }
+
+        public async Task<IActionResult> Search(string productName)
+        {
+            var products = await _srwasButikServices.GetProducts();
+            foreach (var item in products)
+            {
+                if (item.ProductName == productName)
+                {
+                    var product = await _srwasButikServices.GetProductByName(productName);
+
+                    var productList = new List<ProductModel>();
+                    productList.Add(product);
+                    return View("Index", productList);
+                }
+            }
+
+            return View("NotFound");
+        }
         
     }
 }

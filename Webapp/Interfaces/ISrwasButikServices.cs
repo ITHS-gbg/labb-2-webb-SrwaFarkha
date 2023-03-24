@@ -5,7 +5,7 @@ namespace Webapp.Interfaces
     public interface ISrwasButikServices
     {
         Task<List<ProductModel>> GetProducts();
-        Task<List<ProductModel>> GetProducts(string name);
+        Task<ProductModel> GetProductByName(string productName);
         Task<ProductUpdateModel> GetByProductId(int productId);
         Task<bool> CreateProduct(CreateNewProductModel model);
         Task<bool> DeleteProduct(int id);

@@ -1,18 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Products";
+    ViewData["Title"] = "Produkter";
 }
 <h1>@ViewData["Title"]</h1>
 
 @model IEnumerable<Webapp.Models.ProductModel>
+<hr/>
+<h4>Sök produkt</h4>
+@using (Html.BeginForm("Search", "Product", FormMethod.Post)) 
+{
+    <div style="width: 400px; height: 40px; display: flex;">
+        <input class="form-control" type="text" name="productName" id="productName" />
+        <input class="btn btn-secondary" type="submit" value="Sök produkt" style="width: 200px; margin-left: 10px;" />
+    </div>
+}
 
+<hr/>
 <table class="table table-bordered table-striped table-hover table-sm">
     <thead class="table-dark">
     <tr>
-        <th>Product Name</th>
-        <th>Description</th>
-        <th>Price </th>
-        <th>Category</th>
-        <th>Discontinued</th>
+        <th>Produkt Namn</th>
+        <th>Beskrivning</th>
+        <th>Pris </th>
+        <th>Kategori</th>
+        <th>Status</th>
+        <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -24,8 +36,8 @@
             <td>@item.Price</td>
             <td>@item.CategoryName</td>
             <td>@item.Discontinued</td>
-            <th style="text-align: center;"><a asp-action="Delete" asp-route-productId="@item.ProductId"><i class="btn btn-danger">Delete</i></a></th>
-            <th style="text-align: center;"><a asp-action="Edit" asp-route-productId="@item.ProductId"><i class="btn btn-primary">Edit</i></a></th>
+            <th style="text-align: center;"><a asp-action="Delete" asp-route-productId="@item.ProductId"><i class="btn btn-danger">Ta bort</i></a></th>
+            <th style="text-align: center;"><a asp-action="Edit" asp-route-productId="@item.ProductId"><i class="btn btn-primary">Editera</i></a></th>
 
         </tr>
     }

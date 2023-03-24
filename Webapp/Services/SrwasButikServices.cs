@@ -43,14 +43,14 @@ namespace Webapp.Services
         }
 
         //Hämtar en product baserat på namn
-        public async Task<List<ProductModel>> GetProducts(string name)
+        public async Task<ProductModel> GetProductByName(string productName)
         {
-            var response = await _http.GetAsync($"{_baseUrl}product{name}");
+            var response = await _http.GetAsync($"{_baseUrl}product/{productName}");
 
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<List<ProductModel>>(data, _options);
+                var result = JsonSerializer.Deserialize<ProductModel>(data, _options);
                 return result;
             }
             else
@@ -277,7 +277,7 @@ namespace Webapp.Services
 
         public async Task<CategoryModel> GetCategoryById(int categoryId)
         {
-            var response = await _http.GetAsync($"{_baseUrl}product/{categoryId}");
+            var response = await _http.GetAsync($"{_baseUrl}product/{categoryId}/category");
 
             if (response.IsSuccessStatusCode)
             {

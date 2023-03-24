@@ -84,7 +84,7 @@ namespace Webapi.Controllers
         }
 
         //Hämtar category baserat på id
-        [HttpGet("{categoryId:int}/categeory")]
+        [HttpGet("{categoryId:int}/category")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult GetCategoryById(int categoryId)
         {
