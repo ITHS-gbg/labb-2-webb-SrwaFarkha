@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.EntityFrameworkCore;
 using Webapi.Controllers;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories.Interfaces;
@@ -54,18 +55,18 @@ namespace Webapi.Data.Repositories
         public ProductDto GetById(int productId)
         {
             var product = _dbContext.Products.Include(x => x.Category).FirstOrDefault(x => x.ProductId == productId);
-
+            
             var productDto = new ProductDto
             {
-                ProductId = product.ProductId,
-                ProductName = product.ProductName,
-                ProductDescription = product.ProductDescription,
-                Price = product.Price,
-                CategoryName = product.Category.Name,
-                Discontinued = product.Discontinued
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
+                    ProductDescription = product.ProductDescription,
+                    Price = product.Price,
+                    CategoryName = product.Category.Name,
+                    Discontinued = product.Discontinued
             };
 
-            return productDto;
+                return productDto;
         }
 
         public void CreateProduct(CreateProductModel product)

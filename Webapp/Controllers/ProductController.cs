@@ -37,19 +37,7 @@ namespace Webapp.Controllers
         [HttpPost()]
         public async Task<IActionResult> Create(CreateNewProductModel data, int SelectedCategoryId)
         {
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return View("Create", data);
-            //};
-
             var category = await _srwasButikServices.GetCategoryById(SelectedCategoryId);
-
-            //var categoryToInsert = new Category
-            //{
-            //    Id = category.Id,
-            //    Name = category.Name
-            //};
 
             var newProduct = new CreateNewProductModel
             {
@@ -94,5 +82,25 @@ namespace Webapp.Controllers
             };
             return View("Edit", model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductUpdateModel model)
+        {
+            try
+            {
+
+                if (await _srwasButikServices.UpdateProduct(model.ProductId, model))
+                {                 
+                    return RedirectToAction("Index");
+                }
+                return View("Error");
+            }
+
+            catch (System.Exception)
+            {
+                return View("Error");
+            }
+        }
+        
     }
 }

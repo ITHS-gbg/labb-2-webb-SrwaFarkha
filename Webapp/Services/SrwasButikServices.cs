@@ -117,7 +117,7 @@ namespace Webapp.Services
         {
             try
             {
-                var url = $"{_baseUrl}products/{productId}";
+                var url = $"{_baseUrl}product/{productId}/update";
                 var data = JsonSerializer.Serialize(product);
                 var response = await _http.PutAsync(url, new StringContent(data, Encoding.Default, "application/json"));
 

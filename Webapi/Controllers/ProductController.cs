@@ -47,7 +47,7 @@ namespace Webapi.Controllers
             var data = _productRepository.GetById(productId);
             return Ok(data);
         }
-
+    
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult CreateProduct(CreateProductModel product)
