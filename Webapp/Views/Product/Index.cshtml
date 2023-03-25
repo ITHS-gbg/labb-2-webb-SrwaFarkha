@@ -5,14 +5,25 @@
 
 @model IEnumerable<Webapp.Models.ProductModel>
 <hr/>
-<h4>Sök produkt</h4>
-@using (Html.BeginForm("Search", "Product", FormMethod.Post)) 
-{
-    <div style="width: 400px; height: 40px; display: flex;">
-        <input class="form-control" type="text" name="productName" id="productName" />
-        <input class="btn btn-secondary" type="submit" value="Sök produkt" style="width: 200px; margin-left: 10px;" />
+
+<div style="display: flex; justify-content: space-between">
+    <div>
+        <h4>Sök produkt</h4>
+        @using (Html.BeginForm("Search", "Product", FormMethod.Post))
+        {
+            <div style="width: 400px; height: 40px; display: flex;">
+                <input class="form-control" type="text" name="productName" id="productName" />
+                <input class="btn btn-secondary" type="submit" value="Sök produkt" style="width: 200px; margin-left: 10px;" />
+            </div>
+        }
     </div>
-}
+    <div style="align-self: end;">
+        @using (Html.BeginForm("ShowShoppingCart", "Product", FormMethod.Post))
+            {
+                <input class="btn btn-info" type="submit" value="Visa varukorg" />
+            }
+    </div>
+</div>
 
 <hr/>
 <table class="table table-bordered table-striped table-hover table-sm">
@@ -23,6 +34,7 @@
         <th>Pris </th>
         <th>Kategori</th>
         <th>Status</th>
+        <th></th>
         <th></th>
         <th></th>
     </tr>
@@ -38,6 +50,7 @@
             <td>@item.Discontinued</td>
             <th style="text-align: center;"><a asp-action="Delete" asp-route-productId="@item.ProductId"><i class="btn btn-danger">Ta bort</i></a></th>
             <th style="text-align: center;"><a asp-action="Edit" asp-route-productId="@item.ProductId"><i class="btn btn-primary">Editera</i></a></th>
+            <th style="text-align: center;"><a asp-action="AddToCart" asp-route-productId="@item.ProductId"><i class="btn btn-success">Lägg till i varukorg</i></a></th>
 
         </tr>
     }

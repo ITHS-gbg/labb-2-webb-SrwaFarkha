@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Webapi.Data.DataModels;
+using Webapp.Extensions;
 using Webapp.Interfaces;
 using Webapp.Models;
 
@@ -20,8 +21,7 @@ namespace Webapp.Controllers
             return View(result);
         }
 
-        [HttpGet()]
-
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var categories = await _srwasButikServices.GetCategories();
@@ -34,7 +34,7 @@ namespace Webapp.Controllers
             return View("Create", model);
         }
 
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> Create(CreateNewProductModel data, int SelectedCategoryId)
         {
             var category = await _srwasButikServices.GetCategoryById(SelectedCategoryId);
@@ -72,7 +72,7 @@ namespace Webapp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int productId)
         {
-            var product = await _srwasButikServices.GetByProductId(productId);
+            var product = await _srwasButikServices.GetProductById(productId);
             var model = new ProductUpdateModel
             {
                 ProductId = product.ProductId,
@@ -116,9 +116,68 @@ namespace Webapp.Controllers
                     return View("Index", productList);
                 }
             }
-
             return View("NotFound");
         }
-        
+
+
+        //Shopping cart
+        public async Task<IActionResult> AddToCart(int productId)
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<List<ProductCartModel>>("shoppingCart") ?? new List<ProductCartModel>();
+            var product = await _srwasButikServices.GetProductById(productId);
+            cart.Add(new ProductCartModel
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                ProductDescription = product.ProductDescription,
+                Price = product.Price,
+                CategoryName = product.CategoryName,
+                Discontinued = product.Discontinued,
+                Quantity = 1,
+            });
+
+            HttpContext.Session.SetObjectAsJson("shoppingCart", cart);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> RemoveFromCart(int productId)
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<List<ProductCartModel>>("shoppingCart") ?? new List<ProductCartModel>();
+            var item = cart.FirstOrDefault(i => i.ProductId == productId);
+            if (item != null)
+            {
+                cart.Remove(item);
+                HttpContext.Session.SetObjectAsJson("shoppingCart", cart);
+            }
+            return RedirectToAction("ShowShoppingCart");
+        }
+
+        public async Task<IActionResult> ShowShoppingCart()
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<List<ProductCartModel>>("shoppingCart") ?? new List<ProductCartModel>();
+
+            var products = cart
+                .GroupBy(x => x.ProductName)
+                .Select(g => new ProductCartModel
+                {
+                    ProductId = g.First().ProductId,
+                    ProductName = g.First().ProductName,
+                    ProductDescription = g.First().ProductDescription,
+                    Price = g.Select(x => x.Price).Sum(),
+                    Quantity = g.Select(x => x.Quantity).Sum()
+                }).ToList();
+
+
+            decimal totalPrice = 0;
+            foreach (var product in cart)
+            {
+                totalPrice += product.Price * product.Quantity;
+            }
+            ViewBag.TotalPrice = totalPrice;
+
+            return View("ShoppingCart", products);
+        }
+
+
     }
 }

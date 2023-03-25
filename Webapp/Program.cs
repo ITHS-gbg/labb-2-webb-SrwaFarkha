@@ -11,8 +11,21 @@ builder.Services.AddScoped<ISrwasButikServices, SrwasButikServices>();
 builder.Services.AddHttpClient<ISrwasButikServices, SrwasButikServices>();
 
 
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
+
+
 //builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 var app = builder.Build();
+
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

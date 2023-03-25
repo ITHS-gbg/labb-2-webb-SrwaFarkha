@@ -291,7 +291,7 @@ namespace Webapp.Services
             }
         }
 
-        public async Task<ProductUpdateModel> GetByProductId(int productId)
+        public async Task<ProductModel> GetProductById(int productId)
         {
             var response = await _http.GetAsync($"{_baseUrl}product/{productId}");
 
@@ -300,15 +300,7 @@ namespace Webapp.Services
                 var data = await response.Content.ReadAsStringAsync();
                 var result = JsonSerializer.Deserialize<ProductModel>(data, _options);
 
-                var model = new ProductUpdateModel
-                {
-                    ProductId = result.ProductId,
-                    ProductName = result.ProductName,
-                    ProductDescription = result.ProductDescription,
-                    Price = result.Price
-                };
-                
-                return model;
+                return result;
             }
             else
             {

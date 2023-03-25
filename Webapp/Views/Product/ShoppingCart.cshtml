@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Shopping Cart";
+}
+<h1>@ViewData["Title"]</h1>
+
+@model List<ProductCartModel>
+
+
+<table class="table table-bordered table-striped table-hover table-sm">
+    <thead class="table-dark">
+    <tr>
+        <th>Produkt Namn</th>
+        <th>Beskrivning</th>
+        <th>Pris </th>
+        <th>Antal</th>
+
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ProductName</td>
+            <td>@item.ProductDescription</td>
+            <td>@item.Price</td>
+            <td>@item.Quantity</td>
+            <th style="text-align: center;"><a asp-action="RemoveFromCart" asp-route-productId="@item.ProductId"><i class="btn btn-danger">Ta bort en produkt från varukorg</i></a></th>
+
+        </tr>
+    }
+    </tbody>
+
+</table>
+
+<div>
+    <label>Total pris:</label> @ViewBag.TotalPrice
+</div>
