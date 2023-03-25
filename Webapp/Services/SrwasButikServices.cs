@@ -94,7 +94,7 @@ namespace Webapp.Services
 
                 _http.BaseAddress = new Uri($"{_baseUrl}");
 
-                var response = await _http.DeleteAsync($"product/{productId}");
+                var response = await _http.DeleteAsync($"product/{productId}/delete");
 
                 if (response.IsSuccessStatusCode)
                 {

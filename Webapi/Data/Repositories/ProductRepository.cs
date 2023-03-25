@@ -106,26 +106,17 @@ namespace Webapi.Data.Repositories
 
         public List<Category> GetCategories()
         {
-            var categories = _dbContext.Products
-                .Include(x => x.Category)
-                .Select(x => x.Category)
-                .Distinct()
-                .ToList();
+            var categories = _dbContext.Categories.ToList();
 
             return categories;
         }
 
         public Category GetCategoryById(int categoryId)
         {
-            var categories = _dbContext.Products
-                .Include(x => x.Category)
-                .Select(x => x.Category)
-                .Distinct()
-                .ToList();
+            var category = _dbContext.Categories
+                .FirstOrDefault(x => x.Id == categoryId);
 
-            var filteredCategory = categories.FirstOrDefault(x => x.Id == categoryId);
-
-            return filteredCategory;
+            return category;
         }
     }
 }
