@@ -178,10 +178,7 @@ namespace Webapp.Controllers
             return View("ShoppingCart", products);
         }
 
-        public async Task<IActionResult> CreateOrder()
-        {
-            return null;
-        }
+      
 
     }
 }

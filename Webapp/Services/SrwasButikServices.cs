@@ -203,7 +203,7 @@ namespace Webapp.Services
         {
             try
             {
-                var url = _baseUrl + "customers";
+                var url = _baseUrl + "customer";
                 var data = JsonSerializer.Serialize(customer);
 
                 var response = await _http.PostAsync(url, new StringContent(data, Encoding.Default, "application/json"));
