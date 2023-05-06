@@ -12,7 +12,7 @@ namespace Webapi.Data.DataModels
 
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
+        public virtual Account Customer { get; set; }
 
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
     }

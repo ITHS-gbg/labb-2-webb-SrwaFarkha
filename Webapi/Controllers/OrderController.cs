@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories;
 using Webapi.Data.Repositories.Interfaces;
@@ -7,7 +8,7 @@ using Webapi.Models.Dto;
 
 namespace Webapi.Controllers
 {
-    //[Route["api/[controller]")]
+    [Authorize]
     [Route("api/order")]
     [ApiController]
     public class OrderController : ControllerBase
@@ -19,7 +20,6 @@ namespace Webapi.Controllers
             _orderRepository = orderRepository;
         }
 
-        //orderdetails på en specifik order
         [HttpGet("{customerId:int}/GetOrderDetailsByCustomerId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult GetOrderDetailsByCustomerId(int customerId)
@@ -28,7 +28,6 @@ namespace Webapi.Controllers
             return Ok(result);
         }
 
-        //orderdetails på alla ordrar
         [HttpGet("GetAllOrderDetails")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<OrderDto>> GetAllOrderDetails()
@@ -37,7 +36,6 @@ namespace Webapi.Controllers
             return Ok(result);
         }
 
-        //spara ordrarna i databasen
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult CreateOrder(newOrderInput newOrder)

@@ -22,6 +22,47 @@ namespace Webapi.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Webapi.Data.DataModels.Account", b =>
+                {
+                    b.Property<int>("AccountId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AccountId");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Accounts");
+                });
+
             modelBuilder.Entity("Webapi.Data.DataModels.Address", b =>
                 {
                     b.Property<int>("AddressId")
@@ -58,40 +99,6 @@ namespace Webapi.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Webapi.Data.DataModels.Customer", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
-
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CustomerId");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Webapi.Data.DataModels.Order", b =>
@@ -176,7 +183,7 @@ namespace Webapi.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Webapi.Data.DataModels.Customer", b =>
+            modelBuilder.Entity("Webapi.Data.DataModels.Account", b =>
                 {
                     b.HasOne("Webapi.Data.DataModels.Address", "Address")
                         .WithMany()
@@ -189,7 +196,7 @@ namespace Webapi.Data.Migrations
 
             modelBuilder.Entity("Webapi.Data.DataModels.Order", b =>
                 {
-                    b.HasOne("Webapi.Data.DataModels.Customer", "Customer")
+                    b.HasOne("Webapi.Data.DataModels.Account", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)

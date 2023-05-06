@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Webapi.Data;
 using Webapi.Data.DataModels;
@@ -8,7 +9,7 @@ using Webapi.Models.Dto;
 
 namespace Webapi.Controllers
 {
-    //[Route["api/[controller]")]
+    [Authorize]
     [Route("api/product")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -20,7 +21,6 @@ namespace Webapi.Controllers
             _productRepository = productRepository;
         }
 
-        //Hämta alla produkter
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<ProductDto>> GetProducts()
@@ -30,7 +30,6 @@ namespace Webapi.Controllers
             return Ok(data);
         }
 
-        //Hämtar en product baserat på namn
         [HttpGet("{name}", Name = "GetProduct")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<ProductDto> GetProduct(string name)
@@ -39,7 +38,6 @@ namespace Webapi.Controllers
             return Ok(data);
         }
 
-        //Hämtar en product baserat på Id
         [HttpGet("{productId:int}", Name = "GetProductById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<ProductDto> GetProductById(int productId)
@@ -65,7 +63,6 @@ namespace Webapi.Controllers
         }
 
 
-        //updaterar produkt baserat på id
         [HttpPut("{productId:int}/update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult UpdateProduct(int productId, ProductUpdateModel product)
@@ -74,7 +71,6 @@ namespace Webapi.Controllers
             return Ok();
         }
 
-        //Hämtar alla categorier
         [HttpGet("GetCategories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Category>> GetCategories()
@@ -83,7 +79,6 @@ namespace Webapi.Controllers
             return Ok(data);
         }
 
-        //Hämtar category baserat på id
         [HttpGet("{categoryId:int}/category")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult GetCategoryById(int categoryId)

@@ -69,18 +69,18 @@ namespace Webapi.Data.Repositories
         public void CreateOrder(newOrderInput newNewOrder)
         {
             //skapar kund
-            _dbContext.Customers.Add(newNewOrder.Customer);
+            _dbContext.Accounts.Add(newNewOrder.Customer);
             _dbContext.SaveChanges();
 
             //hämtar kund
-            var newCustomer =
-                _dbContext.Customers.FirstOrDefault(x => x.EmailAddress == newNewOrder.Customer.EmailAddress);
+            var newAccount =
+                _dbContext.Accounts.FirstOrDefault(x => x.EmailAddress == newNewOrder.Customer.EmailAddress);
 
             //skapar nytt objekt av order(orderdetails är tom)
             var order = new Order
             {
                 OrderDate = newNewOrder.OrderDate,
-                CustomerId = newCustomer.CustomerId,
+                CustomerId = newAccount.AccountId,
                 OrderDetails = new List<OrderDetails>()
             };
 
