@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Models.Dto;
+using Models.OrderModels;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories.Interfaces;
-using Webapi.Models;
-using Webapi.Models.Dto;
 
 namespace Webapi.Data.Repositories
 {
@@ -15,19 +15,30 @@ namespace Webapi.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public List<OrderDto> GetOrderDetailsByCustomerId(int customerId)
+        public List<OrderDto> GetOrderDetailsByAccountId(int accountId)
         {
             //först hämtar vi allt, sen selectar vi vad vi vill visa
             var result = _dbContext.Orders
-                .Include(x => x.Customer)
+                .Include(x => x.Account)
                 .ThenInclude(x => x.Address)
                 .Include(x => x.OrderDetails)
                 .ThenInclude(x => x.Product)
                 .ThenInclude(x => x.Category)
-                .Where(x => x.CustomerId == customerId)
+                .Where(x => x.AccountId == accountId)
                 .Select(x => new OrderDto
                 {
-                    Customer = x.Customer,
+                    Account = new AccountDto
+                    {
+                        AccountId = x.Account.AccountId,
+                        FirstName = x.Account.FirstName,
+                        LastName = x.Account.LastName,
+                        EmailAddress = x.Account.EmailAddress,
+                        PhoneNumber = x.Account.PhoneNumber,
+            
+                        City = x.Account.Address.City,
+                        StreetAddress = x.Account.Address.StreetAddress
+                        
+                    },
                     OrderDetails = x.OrderDetails.Select(x => new OrderDetailsDto
                     {
                         ProductId = x.ProductId,
@@ -44,14 +55,24 @@ namespace Webapi.Data.Repositories
         public List<OrderDto> GetAllOrderDetails()
         {
             var result = _dbContext.Orders
-                .Include(x => x.Customer)
+                .Include(x => x.Account)
                 .ThenInclude(x => x.Address)
                 .Include(x => x.OrderDetails)
                 .ThenInclude(x => x.Product)
                 .ThenInclude(x => x.Category)
                 .Select(x => new OrderDto
                 {
-                    Customer = x.Customer,
+                    Account = new AccountDto
+                    {
+                        AccountId = x.Account.AccountId,
+                        FirstName = x.Account.FirstName,
+                        LastName = x.Account.LastName,
+                        EmailAddress = x.Account.EmailAddress,
+                        PhoneNumber = x.Account.PhoneNumber,
+
+                        City = x.Account.Address.City,
+                        StreetAddress = x.Account.Address.StreetAddress
+                    },
                     OrderDetails = x.OrderDetails.Select(x => new OrderDetailsDto
                     {
                         ProductId = x.ProductId,
@@ -68,19 +89,14 @@ namespace Webapi.Data.Repositories
 
         public void CreateOrder(newOrderInput newNewOrder)
         {
-            //skapar kund
-            _dbContext.Accounts.Add(newNewOrder.Customer);
-            _dbContext.SaveChanges();
-
             //hämtar kund
-            var newAccount =
-                _dbContext.Accounts.FirstOrDefault(x => x.EmailAddress == newNewOrder.Customer.EmailAddress);
+            var account = _dbContext.Accounts.FirstOrDefault(x => x.EmailAddress == newNewOrder.Account.EmailAddress);
 
             //skapar nytt objekt av order(orderdetails är tom)
             var order = new Order
             {
                 OrderDate = newNewOrder.OrderDate,
-                CustomerId = newAccount.AccountId,
+                AccountId = account.AccountId,
                 OrderDetails = new List<OrderDetails>()
             };
 

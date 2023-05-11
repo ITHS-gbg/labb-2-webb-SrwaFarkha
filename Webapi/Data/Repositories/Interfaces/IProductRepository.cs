@@ -1,6 +1,6 @@
-﻿using Webapi.Data.DataModels;
-using Webapi.Models;
-using Webapi.Models.Dto;
+﻿using Models.Dto;
+using Models.ProductModels;
+using Webapi.Data.DataModels;
 
 namespace Webapi.Data.Repositories.Interfaces
 {

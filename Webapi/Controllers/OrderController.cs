@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto;
+using Models.OrderModels;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories;
 using Webapi.Data.Repositories.Interfaces;
-using Webapi.Models;
-using Webapi.Models.Dto;
 
 namespace Webapi.Controllers
 {
-    [Authorize]
     [Route("api/order")]
     [ApiController]
     public class OrderController : ControllerBase
@@ -20,11 +19,11 @@ namespace Webapi.Controllers
             _orderRepository = orderRepository;
         }
 
-        [HttpGet("{customerId:int}/GetOrderDetailsByCustomerId")]
+        [HttpGet("{customerId:int}/GetOrderDetailsByAccountId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult GetOrderDetailsByCustomerId(int customerId)
         {
-            var result = _orderRepository.GetOrderDetailsByCustomerId(customerId);
+            var result = _orderRepository.GetOrderDetailsByAccountId(customerId);
             return Ok(result);
         }
 

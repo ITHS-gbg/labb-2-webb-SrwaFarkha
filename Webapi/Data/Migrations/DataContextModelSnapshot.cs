@@ -109,7 +109,7 @@ namespace Webapi.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
@@ -117,7 +117,7 @@ namespace Webapi.Data.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("AccountId");
 
                     b.ToTable("Orders");
                 });
@@ -196,13 +196,13 @@ namespace Webapi.Data.Migrations
 
             modelBuilder.Entity("Webapi.Data.DataModels.Order", b =>
                 {
-                    b.HasOne("Webapi.Data.DataModels.Account", "Customer")
+                    b.HasOne("Webapi.Data.DataModels.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Webapi.Data.DataModels.OrderDetails", b =>

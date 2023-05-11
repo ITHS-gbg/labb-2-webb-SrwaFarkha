@@ -1,5 +1,6 @@
-﻿using Webapi.Data.DataModels;
-using Webapi.Models;
+﻿using Models.AccountModels;
+using Models.Dto;
+using Webapi.Data.DataModels;
 
 namespace Webapi.Data.Repositories.Interfaces
 {
@@ -7,10 +8,10 @@ namespace Webapi.Data.Repositories.Interfaces
     {
         public List<Account> GetAll();
 
-        public Account GetByEmailAddress(string EmailAddress);
+        Task<AccountDto> GetByEmailAddress(string EmailAddress);
         public void UpdateAccount(int accountId, AccountUpdateModel customer);
         public void CreateAccount(Account account);
 
-        Task<bool> CheckAccountIsValid(string emailAddress, string password);
+        Task<Account?> CheckIfAccountExist(LoginModel input);
     }
 }

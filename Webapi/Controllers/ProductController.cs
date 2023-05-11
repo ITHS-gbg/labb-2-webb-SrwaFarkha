@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models.Dto;
+using Models.ProductModels;
 using Webapi.Data;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories.Interfaces;
-using Webapi.Models;
-using Webapi.Models.Dto;
 
 namespace Webapi.Controllers
 {
-    [Authorize]
     [Route("api/product")]
     [ApiController]
     public class ProductController : ControllerBase

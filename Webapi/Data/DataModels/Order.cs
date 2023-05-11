@@ -10,9 +10,9 @@ namespace Webapi.Data.DataModels
 
         public DateTime OrderDate { get; set; }
 
-        [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
-        public virtual Account Customer { get; set; }
+        [ForeignKey("Account")]
+        public int AccountId { get; set; }
+        public virtual Account Account { get; set; }
 
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
     }

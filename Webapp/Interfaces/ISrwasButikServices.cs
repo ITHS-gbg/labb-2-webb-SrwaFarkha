@@ -1,4 +1,7 @@
-﻿using Webapp.Models;
+﻿using Models.AccountModels;
+using Models.OrderModels;
+using Models.ProductModels;
+using Webapi.Data.DataModels;
 
 namespace Webapp.Interfaces
 {
@@ -10,14 +13,15 @@ namespace Webapp.Interfaces
         Task<bool> CreateProduct(CreateNewProductModel model);
         Task<bool> DeleteProduct(int id);
         Task<bool> UpdateProduct(int productId, ProductUpdateModel product);
-        Task<List<CustomerModel>> GetCustomers();
-        Task<List<CustomerModel>> GetByEmailAddress(string EmailAddress);
-        Task<bool> UpdateCustomer(int customerId, CustomerUpdateModel customer);
-        Task<bool> CreateCustomer(CustomerModel customer);
+        Task<List<AccountModel>> GetCustomers();
+        Task<AccountModel> GetByEmailAddress(string EmailAddress);
+        Task<bool> UpdateAccount(int accountId, AccountUpdateModel account);
+        Task<bool> CreateAccount(AccountModel account);
         Task<List<OrderModel>> GetAllOrderDetails();
         Task<List<OrderModel>> GetOrderDetailsByCustomerId(int customerId);
         Task<bool> CreateOrder(NewOrderInputModel newOrder);
         Task<List<CategoryModel>> GetCategories();
         Task<CategoryModel> GetCategoryById(int categoryId);
+        Task<Account?> CheckIfAccountExist(LoginModel model);
     }
 }

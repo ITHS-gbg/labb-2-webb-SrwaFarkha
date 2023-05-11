@@ -3,7 +3,9 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-@model IEnumerable<Webapp.Models.ProductModel>
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Models.ProductModels.ProductModel>
 <hr/>
 
 <div style="display: flex; justify-content: space-between">
@@ -17,12 +19,16 @@
             </div>
         }
     </div>
-    <div style="align-self: end;">
-        @using (Html.BeginForm("ShowShoppingCart", "Product", FormMethod.Post))
-            {
-                <input class="btn btn-info" type="submit" value="Visa varukorg" />
-            }
-    </div>
+	<div style="align-self: end;">
+        @if (User.Identity.IsAuthenticated)
+        {
+			@using (Html.BeginForm("ShowShoppingCart", "Product", FormMethod.Post))
+			{
+				<input class="btn btn-info" type="submit" value="Visa varukorg"/>
+			}
+        }
+		
+	</div>
 </div>
 
 <hr/>
@@ -42,17 +48,25 @@
     <tbody>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>@item.ProductName</td>
-            <td>@item.ProductDescription</td>
-            <td>@item.Price</td>
-            <td>@item.CategoryName</td>
-            <td>@item.Discontinued</td>
-            <th style="text-align: center;"><a asp-action="Delete" asp-route-productId="@item.ProductId"><i class="btn btn-danger">Ta bort</i></a></th>
-            <th style="text-align: center;"><a asp-action="Edit" asp-route-productId="@item.ProductId"><i class="btn btn-primary">Editera</i></a></th>
-            <th style="text-align: center;"><a asp-action="AddToCart" asp-route-productId="@item.ProductId"><i class="btn btn-success">Lägg till i varukorg</i></a></th>
+	    <tr>
 
-        </tr>
+		    <td>@item.ProductName</td>
+		    <td>@item.ProductDescription</td>
+		    <td>@item.Price</td>
+		    <td>@item.CategoryName</td>
+		    <td>@item.Discontinued</td>
+
+		    @if (User.FindFirstValue(ClaimTypes.Role) == "True")
+		    {
+			    <th style="text-align: center;"><a asp-action="Delete" asp-route-productId="@item.ProductId"><i class="btn btn-danger">Ta bort</i></a></th>
+			    <th style="text-align: center;"><a asp-action="Edit" asp-route-productId="@item.ProductId"><i class="btn btn-primary">Editera</i></a></th>
+		    }
+            @if (User.Identity.IsAuthenticated)
+            {
+	            <th style="text-align: center;"><a asp-action="AddToCart" asp-route-productId="@item.ProductId"><i class="btn btn-success">Lägg till i varukorg</i></a></th>
+            }
+
+	    </tr>
     }
     
     </tbody>
@@ -60,4 +74,7 @@
 </table>
 
 <hr>
-<a asp-action="Create">Lägg till en ny produkt</a>
+@if (User.FindFirstValue(ClaimTypes.Role) == "True")
+{
+	<a asp-action="Create">Lägg till en ny produkt</a>
+}

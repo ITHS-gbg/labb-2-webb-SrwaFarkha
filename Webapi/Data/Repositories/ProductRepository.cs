@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
+using Models.Dto;
+using Models.ProductModels;
 using Webapi.Controllers;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories.Interfaces;
-using Webapi.Models;
-using Webapi.Models.Dto;
 
 namespace Webapi.Data.Repositories
 {

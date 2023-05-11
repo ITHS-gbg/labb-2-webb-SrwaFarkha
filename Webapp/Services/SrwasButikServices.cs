@@ -1,11 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
+using Models.AccountModels;
+using Models.OrderModels;
+using Models.ProductModels;
 using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
 using Webapi.Data.DataModels;
-using Webapi.Models.Dto;
 using Webapp.Interfaces;
-using Webapp.Models;
 
 namespace Webapp.Services
 {
@@ -139,14 +140,14 @@ namespace Webapp.Services
 
         //CUSTOMERS
         //GET all customers
-        public async Task<List<CustomerModel>> GetCustomers()
+        public async Task<List<AccountModel>> GetCustomers()
         {
-            var response = await _http.GetAsync($"{_baseUrl}customer");
+            var response = await _http.GetAsync($"{_baseUrl}account");
 
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<List<CustomerModel>>(data, _options);
+                var result = JsonSerializer.Deserialize<List<AccountModel>>(data, _options);
                 return result;
             }
             else
@@ -156,14 +157,14 @@ namespace Webapp.Services
         }
 
         //Hämtar en kund baserat på mail
-        public async Task<List<CustomerModel>> GetByEmailAddress(string EmailAddress)
+        public async Task<AccountModel> GetByEmailAddress(string EmailAddress)
         {
-            var response = await _http.GetAsync($"{_baseUrl}customer{EmailAddress}");
+            var response = await _http.GetAsync($"{_baseUrl}account/{EmailAddress}");
 
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<List<CustomerModel>>(data, _options);
+                var result = JsonSerializer.Deserialize<AccountModel>(data, _options);
                 return result;
             }
             else
@@ -173,12 +174,12 @@ namespace Webapp.Services
         }
 
         //updaterar kunden baserat på id
-        public async Task<bool> UpdateCustomer(int customerId, CustomerUpdateModel customer)
+        public async Task<bool> UpdateAccount(int accountId, AccountUpdateModel account)
         {
             try
             {
-                var url = $"{_baseUrl}customer/{customerId}";
-                var data = JsonSerializer.Serialize(customer);
+                var url = $"{_baseUrl}account/{accountId}";
+                var data = JsonSerializer.Serialize(account);
                 var response = await _http.PutAsync(url, new StringContent(data, Encoding.Default, "application/json"));
 
                 if (response.IsSuccessStatusCode)
@@ -197,14 +198,14 @@ namespace Webapp.Services
             }
         }
 
-        //Create Customer
+        //Create Account
 
-        public async Task<bool> CreateCustomer(CustomerModel customer)
+        public async Task<bool> CreateAccount(AccountModel account)
         {
             try
             {
-                var url = _baseUrl + "customer";
-                var data = JsonSerializer.Serialize(customer);
+                var url = _baseUrl + "account";
+                var data = JsonSerializer.Serialize(account);
 
                 var response = await _http.PostAsync(url, new StringContent(data, Encoding.Default, "application/json"));
 
@@ -283,6 +284,25 @@ namespace Webapp.Services
             {
                 var data = await response.Content.ReadAsStringAsync();
                 var result = JsonSerializer.Deserialize<CategoryModel>(data, _options);
+                return result;
+            }
+            else
+            {
+                throw new Exception("Det gick inget vidare");
+            }
+        }
+
+        public async Task<Account?> CheckIfAccountExist(LoginModel model)
+        {
+            var url = _baseUrl + "account/check-if-account-exist";
+            var dataInput = JsonSerializer.Serialize(model);
+
+            var response = await _http.PostAsync(url, new StringContent(dataInput, Encoding.Default, "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<Account>(data, _options);
                 return result;
             }
             else

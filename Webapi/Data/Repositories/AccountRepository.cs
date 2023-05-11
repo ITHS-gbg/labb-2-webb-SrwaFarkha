@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models.AccountModels;
+using Models.Dto;
 using Webapi.Data.DataModels;
 using Webapi.Data.Repositories.Interfaces;
-using Webapi.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Webapi.Data.Repositories
@@ -21,10 +22,25 @@ namespace Webapi.Data.Repositories
             return accounts;
         }
 
-        public Account GetByEmailAddress(string EmailAddress)
+        public async Task<AccountDto> GetByEmailAddress(string EmailAddress)
         {
-            var account = _dbContext.Accounts.Include(x => x.Address).FirstOrDefault(x => x.EmailAddress == EmailAddress );
-            return account;
+            var account = await _dbContext.Accounts
+                .Include(x => x.Address)
+                .FirstOrDefaultAsync(x => x.EmailAddress == EmailAddress);
+
+            var accountDto = new AccountDto
+            {
+                AccountId = account.AccountId,
+                FirstName = account.FirstName,
+                LastName = account.LastName,
+                EmailAddress = account.EmailAddress,
+                PhoneNumber = account.PhoneNumber,
+       
+                City = account.Address.City,
+                StreetAddress = account.Address.StreetAddress
+            };
+
+            return accountDto;
         }
 
         public void UpdateAccount(int accountId, AccountUpdateModel update)
@@ -37,7 +53,12 @@ namespace Webapi.Data.Repositories
                 accountFromDb.LastName = update.LastName;
                 accountFromDb.PhoneNumber = update.PhoneNumber;
                 accountFromDb.Password = update.Password;
-                accountFromDb.Address = update.Address;
+                accountFromDb.Address = new Address
+                {
+                    AddressId = update.Address.AddressId,
+                    City = update.Address.City,
+                    StreetAddress = update.Address.StreetAddress
+                };
                 _dbContext.SaveChanges();
             }
         }
@@ -48,17 +69,12 @@ namespace Webapi.Data.Repositories
             _dbContext.SaveChanges();
         }
 
-        public async Task<bool> CheckAccountIsValid(string emailAddress, string password)
+        public async Task<Account?> CheckIfAccountExist(LoginModel input)
         {
             var account = await _dbContext.Accounts
-                .FirstOrDefaultAsync(x => x.EmailAddress == emailAddress && x.Password == password);
-           
-            if (account == null)
-            {
-                return false;
-            }
-            
-            return true;
+                .FirstOrDefaultAsync(x => x.EmailAddress == input.EmailAddress  && x.Password == input.Password);
+
+            return account;
         }
     }
 }

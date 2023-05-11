@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models.AccountModels;
 using Webapi.Data.DataModels;
 using Webapi.Data;
 using Webapi.Data.Repositories.Interfaces;
 using Webapi.Data.Repositories;
-using Webapi.Models;
 
 namespace Webapi.Controllers
 {
-    //[Route["api/[controller]")]
-    [Authorize]
     [Route("api/account")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -33,9 +31,9 @@ namespace Webapi.Controllers
 
         [HttpGet("{EmailAddress}", Name = "GetAccount")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Account> GetByEmailAddress(string EmailAddress)
-        {
-            var data = _accountRepository.GetByEmailAddress(EmailAddress);
+        public async Task<IActionResult> GetByEmailAddress(string EmailAddress)
+        { 
+            var data = await _accountRepository.GetByEmailAddress(EmailAddress);
             return Ok(data);
 
         }
@@ -54,6 +52,14 @@ namespace Webapi.Controllers
         {
             _accountRepository.CreateAccount(account);
             return Ok();
+        }
+
+        [HttpPost("check-if-account-exist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> CheckIfAccountExist([FromBody] LoginModel model)
+        {
+            var account = await _accountRepository.CheckIfAccountExist(model);
+            return Ok(account);
         }
     }
 }
