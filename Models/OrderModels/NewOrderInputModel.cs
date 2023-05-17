@@ -5,9 +5,10 @@ namespace Models.OrderModels
 {
     public class NewOrderInputModel
     {
-        public DateTime OrderDate { get; set; }
-        public AccountModel Account { get; set; }
-        public List<OrderDetailsModel> OrderDetails { get; set; }
+	    public int AccountId { get; set; }
+		public DateTime OrderDate { get; set; }
+        
+        public IEnumerable<OrderDetailsInputModel> OrderDetails { get; set; }
 
     }
 }

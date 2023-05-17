@@ -3,6 +3,7 @@
     public class OrderDto
     {
         public AccountDto Account { get; set; }
-        public List<OrderDetailsDto> OrderDetails { get; set; }
+        public DateTime OrderDate { get; set; }
+		public List<OrderDetailsDto> OrderDetails { get; set; }
     }
 }

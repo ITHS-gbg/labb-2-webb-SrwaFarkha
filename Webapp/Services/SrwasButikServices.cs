@@ -229,7 +229,7 @@ namespace Webapp.Services
         //GET all order
         public async Task<List<OrderModel>> GetAllOrderDetails()
         {
-            var response = await _http.GetAsync($"{_baseUrl}order");
+            var response = await _http.GetAsync($"{_baseUrl}order/get-all-order-details");
 
             if (response.IsSuccessStatusCode)
             {
@@ -244,9 +244,9 @@ namespace Webapp.Services
         }
 
         //orderdetails på en specifik order by id
-        public async Task<List<OrderModel>> GetOrderDetailsByCustomerId(int customerId)
+        public async Task<List<OrderModel>> GetOrderDetailsByAccountId(int accountId)
         {
-            var response = await _http.GetAsync($"{_baseUrl}order{customerId}");
+            var response = await _http.GetAsync($"{_baseUrl}order/{accountId}/GetOrderDetailsByAccountId");
 
             if (response.IsSuccessStatusCode)
             {
@@ -254,10 +254,9 @@ namespace Webapp.Services
                 var result = JsonSerializer.Deserialize<List<OrderModel>>(data, _options);
                 return result;
             }
-            else
-            {
-                throw new Exception("Det gick inget vidare");
-            }
+            
+	        throw new Exception("Det gick inget vidare");
+            
         }
 
         public async Task<List<CategoryModel>> GetCategories()
@@ -302,8 +301,17 @@ namespace Webapp.Services
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<Account>(data, _options);
-                return result;
+
+                if (data != "")
+                {
+	                var result = JsonSerializer.Deserialize<Account?>(data, _options);
+	                return result;
+				}
+                else
+                {
+	                return null;
+                }
+                
             }
             else
             {
@@ -333,7 +341,7 @@ namespace Webapp.Services
         {
             try
             {
-                var url = _baseUrl + "orders";
+                var url = _baseUrl + "order";
                 var data = JsonSerializer.Serialize(newOrder);
 
                 var response = await _http.PostAsync(url, new StringContent(data, Encoding.Default, "application/json"));

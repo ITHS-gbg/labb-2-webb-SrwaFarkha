@@ -1,4 +1,5 @@
-﻿@model Models.AccountModels.AccountModel
+﻿@using System.Security.Claims
+@model Models.AccountModels.AccountModel
 
 <h1>Välkommen @Model.FirstName</h1>
 <hr/>
@@ -6,15 +7,21 @@
 <div class="left container mt-3">
 <ul class="nav flex-column">
 	<li class="nav-item">
-		<a class="nav-link" href="#">Profil</a>
+		<a class="nav-link disabled" href="">Profil</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="#">Beställningar</a>
+		<a class="nav-link" asp-area="" asp-controller="Account" asp-action="ShowUsersOrder">Beställningar</a>
+	</li>
+@if (User.FindFirstValue(ClaimTypes.Role) == "True")
+{
+	<li class="nav-item">
+		<a class="nav-link" asp-area="" asp-controller="Account" asp-action="ShowAllAccounts">Kunder</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="#">Admin??</a>
+		<a class="nav-link" asp-area="" asp-controller="Account" asp-action="ShowAllOrders">Alla ordrar</a>
 	</li>
-	
+
+}
 </ul>
 </div>
 
@@ -50,22 +57,10 @@
 
 </div>
 
-@*<div class="mb-3">
-    <label for="City" class="form-label">Stad:</label>
-    <input type="text" id="City" @bind="dbUser.Address.City" class="form-control" placeholder="@dbUser.Address.City" />
-</div>
-<div class="mb-3">
-    <label for="Street" class="form-label">Gata:</label>
-    <input type="text" id="Street" @bind="dbUser.Address.Street" class="form-control" placeholder="@dbUser.Address.Street" />
-</div>
-<div class="mb-3">
-    <label for="PostNumber" class="form-label">Postnummer:</label>
-    <input type="text" id="PostNumber" @bind="dbUser.Address.PostNumber" class="form-control" placeholder="@dbUser.Address.PostNumber" />
-</div>*@
-
-<button type="submit" class="btn btn-primary">Spara Ändringar</button>
+<button type="submit" class="spara-andringar btn btn-primary">Spara Ändringar</button>
 
 <style>
+	
     .left{
         width: 20%;
         float: left;
@@ -92,5 +87,6 @@
         float: left;
         width: 77%;
     }
+
 
 </style>

@@ -63,10 +63,23 @@ namespace Webapi.Data.Repositories
             }
         }
 
-        public void CreateAccount(Account account)
+        public async Task CreateAccount(AccountModel account)
         {
-            _dbContext.Accounts.Add(account);
-            _dbContext.SaveChanges();
+	        var newAccount = new Account
+	        {
+		        FirstName = account.FirstName,
+		        LastName = account.LastName,
+		        EmailAddress = account.EmailAddress,
+		        Password = account.Password,
+		        PhoneNumber = account.PhoneNumber,
+		        Address = new Address
+		        {
+			        City = account.City,
+			        StreetAddress = account.StreetAddress,
+		        }
+	        };
+	        _dbContext.Accounts.Add(newAccount);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<Account?> CheckIfAccountExist(LoginModel input)

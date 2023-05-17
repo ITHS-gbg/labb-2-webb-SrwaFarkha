@@ -18,8 +18,9 @@ namespace Webapp.Interfaces
         Task<bool> UpdateAccount(int accountId, AccountUpdateModel account);
         Task<bool> CreateAccount(AccountModel account);
         Task<List<OrderModel>> GetAllOrderDetails();
-        Task<List<OrderModel>> GetOrderDetailsByCustomerId(int customerId);
-        Task<bool> CreateOrder(NewOrderInputModel newOrder);
+        Task<List<OrderModel>> GetOrderDetailsByAccountId(int accountId);
+
+		Task<bool> CreateOrder(NewOrderInputModel newOrder);
         Task<List<CategoryModel>> GetCategories();
         Task<CategoryModel> GetCategoryById(int categoryId);
         Task<Account?> CheckIfAccountExist(LoginModel model);

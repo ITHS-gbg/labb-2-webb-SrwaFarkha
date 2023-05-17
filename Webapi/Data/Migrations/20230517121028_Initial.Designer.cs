@@ -12,7 +12,7 @@ using Webapi.Data;
 namespace Webapi.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230511145609_Initial")]
+    [Migration("20230517121028_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -135,9 +135,6 @@ namespace Webapi.Data.Migrations
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");

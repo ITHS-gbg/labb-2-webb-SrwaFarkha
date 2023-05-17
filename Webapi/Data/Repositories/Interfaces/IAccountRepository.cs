@@ -10,7 +10,7 @@ namespace Webapi.Data.Repositories.Interfaces
 
         Task<AccountDto> GetByEmailAddress(string EmailAddress);
         public void UpdateAccount(int accountId, AccountUpdateModel customer);
-        public void CreateAccount(Account account);
+        Task CreateAccount(AccountModel account);
 
         Task<Account?> CheckIfAccountExist(LoginModel input);
     }

@@ -34,6 +34,7 @@ namespace Webapp.Controllers
                 return View("Index", model);
             }
 
+            
             var validAccount = await _srwasButikServices.CheckIfAccountExist(model);
 
             if (validAccount != null)
@@ -42,8 +43,12 @@ namespace Webapp.Controllers
 
                 return RedirectToAction("Index", "Account");
             }
+            else
+            {
+	            ModelState.AddModelError("", "Inloggningen misslyckades, mejladressen eller lösenordet du angav är fel.");
+	            return View("Index", model);
 
-            return View("Index", model);
+			}
         }
 
         [AllowAnonymous]

@@ -15,39 +15,41 @@ namespace Webapi.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public List<OrderDto> GetOrderDetailsByAccountId(int accountId)
+        public async Task<List<OrderDto>> GetOrderDetailsByAccountId(int accountId)
         {
             //först hämtar vi allt, sen selectar vi vad vi vill visa
-            var result = _dbContext.Orders
-                .Include(x => x.Account)
-                .ThenInclude(x => x.Address)
-                .Include(x => x.OrderDetails)
-                .ThenInclude(x => x.Product)
-                .ThenInclude(x => x.Category)
-                .Where(x => x.AccountId == accountId)
-                .Select(x => new OrderDto
-                {
-                    Account = new AccountDto
-                    {
-                        AccountId = x.Account.AccountId,
-                        FirstName = x.Account.FirstName,
-                        LastName = x.Account.LastName,
-                        EmailAddress = x.Account.EmailAddress,
-                        PhoneNumber = x.Account.PhoneNumber,
-            
-                        City = x.Account.Address.City,
-                        StreetAddress = x.Account.Address.StreetAddress
-                        
-                    },
-                    OrderDetails = x.OrderDetails.Select(x => new OrderDetailsDto
-                    {
-                        ProductId = x.ProductId,
-                        ProductName = x.Product.ProductName,
-                        Quantity = x.Quantity,
-                        Price = x.Price
+            var result = await _dbContext.Orders
+	            .Include(x => x.Account)
+	            .ThenInclude(x => x.Address)
+	            .Include(x => x.OrderDetails)
+	            .ThenInclude(x => x.Product)
+	            .ThenInclude(x => x.Category)
+	            .Where(x => x.AccountId == accountId)
+	            .Select(x => new OrderDto
+	            {
+		            Account = new AccountDto
+		            {
+			            AccountId = x.Account.AccountId,
+			            FirstName = x.Account.FirstName,
+			            LastName = x.Account.LastName,
+			            EmailAddress = x.Account.EmailAddress,
+			            PhoneNumber = x.Account.PhoneNumber,
 
-                    }).ToList()
-                }).ToList();
+			            City = x.Account.Address.City,
+			            StreetAddress = x.Account.Address.StreetAddress
+
+		            },
+                    OrderDate = x.OrderDate,
+		            OrderDetails = x.OrderDetails.Select(x => new OrderDetailsDto
+		            {
+			            ProductId = x.ProductId,
+			            ProductName = x.Product.ProductName,
+			            Quantity = x.Quantity,
+			            Price = x.Product.Price,
+                        TotalProductsPrice = x.Product.Price*x.Quantity
+
+		            }).ToList()
+	            }).ToListAsync();
 
             return result;
         }
@@ -78,25 +80,26 @@ namespace Webapi.Data.Repositories
                         ProductId = x.ProductId,
                         ProductName = x.Product.ProductName,
                         Quantity = x.Quantity,
-                        Price = x.Price,
+                        Price = x.Product.Price,
+                        TotalProductsPrice = x.Product.Price * x.Quantity
 
-                    }).ToList()
+					}).ToList()
                 }).ToList();
 
             return result;
 
         }
 
-        public void CreateOrder(newOrderInput newNewOrder)
+        public Task CreateOrder(NewOrderInputModel newNewOrder)
         {
             //hämtar kund
-            var account = _dbContext.Accounts.FirstOrDefault(x => x.EmailAddress == newNewOrder.Account.EmailAddress);
+            //var account = _dbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == newNewOrder.AccountId);
 
             //skapar nytt objekt av order(orderdetails är tom)
             var order = new Order
             {
                 OrderDate = newNewOrder.OrderDate,
-                AccountId = account.AccountId,
+                AccountId = newNewOrder.AccountId,
                 OrderDetails = new List<OrderDetails>()
             };
 
@@ -109,7 +112,6 @@ namespace Webapi.Data.Repositories
                 {
                     ProductId = product.ProductId,
                     Quantity = detail.Quantity,
-                    Price = detail.Quantity*product.Price,
                 };
 
                 order.OrderDetails.Add(orderDetail);
@@ -117,6 +119,8 @@ namespace Webapi.Data.Repositories
 
             _dbContext.Orders.Add(order);
             _dbContext.SaveChanges();
+
+            return Task.FromResult("Order successfully created!");
         }
     }
 }

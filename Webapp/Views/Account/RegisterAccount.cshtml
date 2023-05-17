@@ -3,21 +3,11 @@
 
 }
 
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Models.AccountModels
 @model Models.AccountModels.RegisterAccountModel
 
-
-@*STEG 2. Skapa en inmatningssida*@
 <h1>Registrera dig</h1>
 
-@Html.ValidationSummary()
-
-@*Steg 4. SKAPA ETT FORMULÄR*@
-
-@await Html.PartialAsync("_ShoppingCartPartial",new List<ProductCartModel>(@ViewBag.Cart))
-
-<form asp-controller="Customer" asp-action="CreateOrder" method="POST">
+<form asp-controller="Account" asp-action="CreateAccount1" method="POST">
     <div class="card">
         <div class="card-header">
         </div>
@@ -25,35 +15,33 @@
             <div class="mb-3">
                 <label class="form-label" asp-for="FirstName"></label>
                 <input class="form-control" asp-for="FirstName">
-                <span asp-validation-for="FirstName"></span>
             </div>
             <div class="mb-3">
                 <label class="form-label" asp-for="LastName"></label>
                 <input class="form-control" asp-for="LastName">
-                <span asp-validation-for="LastName"></span>
             </div>
-            <div class="mb-3">
-                <label class="form-label" asp-for="EmailAddress"></label>
-                <input class="form-control" asp-for="EmailAddress">
-                <span asp-validation-for="EmailAddress"></span>
-            </div>
+	        <div class="mb-3">
+		        <label class="form-label" asp-for="EmailAddress"></label>
+		        <input class="form-control" asp-for="EmailAddress">
+	        </div>
+	        <div class="mb-3">
+		        <label class="form-label" asp-for="Password"></label>
+		        <input class="form-control" asp-for="Password">
+	        </div>
             <div class="mb-3">
                 <label class="form-label" asp-for="PhoneNumber"></label>
                 <input class="form-control" asp-for="PhoneNumber">
-                <span asp-validation-for="PhoneNumber"></span>
             </div>
             <div class="mb-3">
                 <label class="form-label" asp-for="City"></label>
                 <input class="form-control" asp-for="City">
-                <span asp-validation-for="City"></span>
             </div>
             <div class="mb-3">
                 <label class="form-label" asp-for="StreetAddress"></label>
                 <input class="form-control" asp-for="StreetAddress">
-                <span asp-validation-for="StreetAddress"></span>
             </div>
 
-            <button id="save" type="submit" class="btn btn-primary">Köp</button>
+            <button id="save" type="submit" class="btn btn-primary">Skapa konto</button>
         </div>
     </div>
 </form>

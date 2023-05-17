@@ -39,10 +39,13 @@
         <th>Beskrivning</th>
         <th>Pris </th>
         <th>Kategori</th>
-        <th>Status</th>
-        <th></th>
-        <th></th>
-        <th></th>
+	    <th>Status</th>
+    @if (User.FindFirstValue(ClaimTypes.Role) == "True")
+    {
+	    <th></th>
+	    <th></th>
+	    <th></th>
+    }
     </tr>
     </thead>
     <tbody>

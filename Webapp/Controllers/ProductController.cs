@@ -126,6 +126,7 @@ namespace Webapp.Controllers
         public async Task<IActionResult> AddToCart(int productId)
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<ProductCartModel>>("shoppingCart") ?? new List<ProductCartModel>();
+            
             var product = await _srwasButikServices.GetProductById(productId);
             cart.Add(new ProductCartModel
             {
@@ -165,13 +166,13 @@ namespace Webapp.Controllers
                     ProductId = g.First().ProductId,
                     ProductName = g.First().ProductName,
                     ProductDescription = g.First().ProductDescription,
-                    Price = g.Select(x => x.Price).Sum(),
+                    Price = g.First().Price,
                     Quantity = g.Select(x => x.Quantity).Sum()
                 }).ToList();
 
 
             decimal totalPrice = 0;
-            foreach (var product in cart)
+            foreach (var product in products)
             {
                 totalPrice += product.Price * product.Quantity;
             }
@@ -180,7 +181,6 @@ namespace Webapp.Controllers
             return View("ShoppingCart", products);
         }
 
-      
 
     }
 }

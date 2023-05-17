@@ -19,15 +19,15 @@ namespace Webapi.Controllers
             _orderRepository = orderRepository;
         }
 
-        [HttpGet("{customerId:int}/GetOrderDetailsByAccountId")]
+        [HttpGet("{accountId:int}/GetOrderDetailsByAccountId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult GetOrderDetailsByCustomerId(int customerId)
+        public async Task<IActionResult> GetOrderDetailsByAccountId(int accountId)
         {
-            var result = _orderRepository.GetOrderDetailsByAccountId(customerId);
+            var result = await _orderRepository.GetOrderDetailsByAccountId(accountId);
             return Ok(result);
         }
 
-        [HttpGet("GetAllOrderDetails")]
+        [HttpGet("get-all-order-details")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<OrderDto>> GetAllOrderDetails()
         {
@@ -37,7 +37,7 @@ namespace Webapi.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult CreateOrder(newOrderInput newOrder)
+        public ActionResult CreateOrder(NewOrderInputModel newOrder)
         {
             _orderRepository.CreateOrder(newOrder);
             

@@ -48,9 +48,9 @@ namespace Webapi.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult CreateAccount(Account account)
+        public async Task<IActionResult> CreateAccount(AccountModel account)
         {
-            _accountRepository.CreateAccount(account);
+            await _accountRepository.CreateAccount(account);
             return Ok();
         }
 
