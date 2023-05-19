@@ -6,10 +6,10 @@ namespace Webapi.Data.Repositories.Interfaces
 {
     public interface IAccountRepository
     {
-        public List<Account> GetAll();
+	    Task<List<Account>> GetAll();
+	    Task<Account> GetByEmailAddress(string EmailAddress);
 
-        Task<AccountDto> GetByEmailAddress(string EmailAddress);
-        public void UpdateAccount(int accountId, AccountUpdateModel customer);
+		Task UpdateAccount(int accountId, AccountUpdateModel customer);
         Task CreateAccount(AccountModel account);
 
         Task<Account?> CheckIfAccountExist(LoginModel input);

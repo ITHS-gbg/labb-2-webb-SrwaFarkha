@@ -5,7 +5,6 @@ namespace Webapi.Data.DataModels
 {
     public class Product
     {
-        //komunicera med data basen
         [Key]
         public int ProductId { get; set; }
         public string ProductName { get; set; }

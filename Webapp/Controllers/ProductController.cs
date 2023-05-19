@@ -80,7 +80,8 @@ namespace Webapp.Controllers
                 ProductId = product.ProductId,
                 ProductName = product.ProductName,
                 ProductDescription = product.ProductDescription,
-                Price = product.Price
+                Price = product.Price,
+                Discontinued = product.Discontinued
             };
             return View("Edit", model);
         }
@@ -90,8 +91,7 @@ namespace Webapp.Controllers
         {
             try
             {
-
-                if (await _srwasButikServices.UpdateProduct(model.ProductId, model))
+	            if (await _srwasButikServices.UpdateProduct(model.ProductId, model))
                 {                 
                     return RedirectToAction("Index");
                 }
@@ -122,7 +122,6 @@ namespace Webapp.Controllers
         }
 
 
-        //Shopping cart
         public async Task<IActionResult> AddToCart(int productId)
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<ProductCartModel>>("shoppingCart") ?? new List<ProductCartModel>();
@@ -180,7 +179,5 @@ namespace Webapp.Controllers
 
             return View("ShoppingCart", products);
         }
-
-
     }
 }

@@ -13,76 +13,76 @@ namespace Webapi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
+		private readonly IUnitOfWork _uow;
 
-        public ProductController(IProductRepository productRepository)
-        {
-            _productRepository = productRepository;
-        }
+		public ProductController(IUnitOfWork uow)
+		{
+			_uow = uow;
+		}
 
-        [HttpGet]
+		[HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ProductDto>> GetProducts()
+        public async Task <IActionResult> GetProducts()
         {
-            var data = _productRepository.GetAll();
+            var data = await _uow.ProductRepository.GetAll();
 
             return Ok(data);
         }
 
         [HttpGet("{name}", Name = "GetProduct")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<ProductDto> GetProduct(string name)
+        public async Task<IActionResult> GetProduct(string name)
         {
-            var data = _productRepository.GetByName(name);
+            var data = await _uow.ProductRepository.GetByName(name);
             return Ok(data);
         }
 
         [HttpGet("{productId:int}", Name = "GetProductById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<ProductDto> GetProductById(int productId)
+        public async Task<IActionResult> GetProductById(int productId)
         {
-            var data = _productRepository.GetById(productId);
+            var data = await _uow.ProductRepository.GetById(productId);
             return Ok(data);
         }
     
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult CreateProduct(CreateProductModel product)
+        public async Task<IActionResult> CreateProduct(CreateProductModel product)
         {
-            _productRepository.CreateProduct(product);
+            await _uow.ProductRepository.CreateProduct(product);
             return Ok();
         }
 
         [HttpDelete("{productId}/delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult DeleteProduct(int productId)
+        public async Task<IActionResult> DeleteProduct(int productId)
         {
-            _productRepository.DeleteProduct(productId);
+            await _uow.ProductRepository.DeleteProduct(productId);
             return Ok();
         }
 
 
         [HttpPut("{productId:int}/update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult UpdateProduct(int productId, ProductUpdateModel product)
+        public async Task<IActionResult> UpdateProduct(int productId, ProductUpdateModel product)
         {
-            _productRepository.UpdateProduct(productId, product);
+            await _uow.ProductRepository.UpdateProduct(productId, product);
             return Ok();
         }
 
         [HttpGet("GetCategories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Category>> GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            var data = _productRepository.GetCategories();
+            var data = await _uow.ProductRepository.GetCategories();
             return Ok(data);
         }
 
         [HttpGet("{categoryId:int}/category")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult GetCategoryById(int categoryId)
+        public async Task<IActionResult> GetCategoryById(int categoryId)
         {
-            var data = _productRepository.GetCategoryById(categoryId);
+            var data = await _uow.ProductRepository.GetCategoryById(categoryId);
             return Ok(data);
         }
 

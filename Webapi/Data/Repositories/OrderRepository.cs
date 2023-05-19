@@ -17,7 +17,6 @@ namespace Webapi.Data.Repositories
 
         public async Task<List<OrderDto>> GetOrderDetailsByAccountId(int accountId)
         {
-            //först hämtar vi allt, sen selectar vi vad vi vill visa
             var result = await _dbContext.Orders
 	            .Include(x => x.Account)
 	            .ThenInclude(x => x.Address)
@@ -54,9 +53,10 @@ namespace Webapi.Data.Repositories
             return result;
         }
 
-        public List<OrderDto> GetAllOrderDetails()
-        {
-            var result = _dbContext.Orders
+        public async Task<List<OrderDto>> GetAllOrderDetails()
+
+		{
+            var result = await _dbContext.Orders
                 .Include(x => x.Account)
                 .ThenInclude(x => x.Address)
                 .Include(x => x.OrderDetails)
@@ -84,7 +84,7 @@ namespace Webapi.Data.Repositories
                         TotalProductsPrice = x.Product.Price * x.Quantity
 
 					}).ToList()
-                }).ToList();
+                }).ToListAsync();
 
             return result;
 
@@ -92,22 +92,16 @@ namespace Webapi.Data.Repositories
 
         public Task CreateOrder(NewOrderInputModel newNewOrder)
         {
-            //hämtar kund
-            //var account = _dbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == newNewOrder.AccountId);
-
-            //skapar nytt objekt av order(orderdetails är tom)
-            var order = new Order
+	        var order = new Order
             {
                 OrderDate = newNewOrder.OrderDate,
                 AccountId = newNewOrder.AccountId,
                 OrderDetails = new List<OrderDetails>()
             };
 
-            //sätter värderna på orderdetails
             foreach (var detail in newNewOrder.OrderDetails)
             {
                 var product = _dbContext.Products.Find(detail.ProductId);
-                //för varje loop den går skapar vi en ny objekt för orderdetails
                 var orderDetail = new OrderDetails
                 {
                     ProductId = product.ProductId,

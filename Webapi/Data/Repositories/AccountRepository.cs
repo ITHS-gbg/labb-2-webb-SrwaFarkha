@@ -16,37 +16,25 @@ namespace Webapi.Data.Repositories
         {
             _dbContext = dbContext;
         }
-        public List<Account> GetAll()
+        public async Task<List<Account>> GetAll()
         {
-            var accounts = _dbContext.Accounts.Include(x => x.Address).ToList(); ;
+            var accounts = await _dbContext.Accounts.Include(x => x.Address).ToListAsync(); ;
             return accounts;
         }
 
-        public async Task<AccountDto> GetByEmailAddress(string EmailAddress)
+        public async Task<Account> GetByEmailAddress(string EmailAddress)
         {
             var account = await _dbContext.Accounts
                 .Include(x => x.Address)
                 .FirstOrDefaultAsync(x => x.EmailAddress == EmailAddress);
 
-            var accountDto = new AccountDto
-            {
-                AccountId = account.AccountId,
-                FirstName = account.FirstName,
-                LastName = account.LastName,
-                EmailAddress = account.EmailAddress,
-                PhoneNumber = account.PhoneNumber,
-       
-                City = account.Address.City,
-                StreetAddress = account.Address.StreetAddress
-            };
-
-            return accountDto;
+            return account;
         }
 
-        public void UpdateAccount(int accountId, AccountUpdateModel update)
+        public async Task UpdateAccount(int accountId, AccountUpdateModel update)
         {
 
-            var accountFromDb = _dbContext.Accounts.FirstOrDefault(x => x.AccountId == accountId);
+            var accountFromDb = await _dbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == accountId);
             if (accountFromDb != null)
             {
                 accountFromDb.FirstName = update.FirstName;
@@ -59,9 +47,10 @@ namespace Webapi.Data.Repositories
                     City = update.Address.City,
                     StreetAddress = update.Address.StreetAddress
                 };
-                _dbContext.SaveChanges();
-            }
-        }
+                await _dbContext.SaveChangesAsync();
+			}
+            
+		}
 
         public async Task CreateAccount(AccountModel account)
         {

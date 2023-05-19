@@ -6,13 +6,13 @@ namespace Webapi.Data.Repositories.Interfaces
 {
     public interface IProductRepository
     { 
-        List<ProductDto> GetAll();
-        ProductDto GetByName(string name);
-        void CreateProduct(CreateProductModel product);
-        void DeleteProduct(int id);
-        void UpdateProduct(int productId, ProductUpdateModel update);
-        List<Category> GetCategories();
-        Category GetCategoryById(int categoryId);
-        ProductDto GetById(int productId);
+        Task<List<ProductDto>> GetAll();
+        Task<ProductDto> GetByName(string name);
+        Task CreateProduct(CreateProductModel product);
+        Task DeleteProduct(int id);
+        Task UpdateProduct(int productId, ProductUpdateModel update);
+        Task<List<Category>> GetCategories();
+        Task<Category> GetCategoryById(int categoryId);
+        Task<ProductDto> GetById(int productId);
     }
 }

@@ -5,13 +5,10 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Models.ProductModels.CreateNewProductModel
 
-
-@*STEG 2. Skapa en inmatningssida*@
 <h1>Här lägger vi till nya produkter</h1>
 
 @Html.ValidationSummary()
 
-@*Steg 4. SKAPA ETT FORMULÄR*@
 <form asp-controller="Product" asp-action="Create" method="POST">
     <div class="card">
         <div class="card-header">

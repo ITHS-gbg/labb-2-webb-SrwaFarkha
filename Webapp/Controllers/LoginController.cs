@@ -19,7 +19,6 @@ namespace Webapp.Controllers
             _srwasButikServices = srwasButikServices;
         }
 
-
         public async Task<IActionResult> Index()
         {
             var model = new LoginModel();
@@ -34,7 +33,6 @@ namespace Webapp.Controllers
                 return View("Index", model);
             }
 
-            
             var validAccount = await _srwasButikServices.CheckIfAccountExist(model);
 
             if (validAccount != null)

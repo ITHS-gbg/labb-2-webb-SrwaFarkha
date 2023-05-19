@@ -13,18 +13,18 @@ namespace Webapi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountRepository _accountRepository;
+	    private readonly IUnitOfWork _uow;
 
-        public AccountController(IAccountRepository accountRepository)
+        public AccountController(IUnitOfWork uow)
         {
-            _accountRepository = accountRepository;
+	        _uow = uow;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Account>> GetAccounts()
+        public async Task<IActionResult> GetAccounts()
         {
-            var data = _accountRepository.GetAll();
+            var data = await _uow.AccountRepository.GetAll();
 
             return Ok(data);
         }
@@ -33,16 +33,16 @@ namespace Webapi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByEmailAddress(string EmailAddress)
         { 
-            var data = await _accountRepository.GetByEmailAddress(EmailAddress);
+            var data = await _uow.AccountRepository.GetByEmailAddress(EmailAddress);
             return Ok(data);
 
         }
 
         [HttpPut("{accountId:int}", Name = "UpdateAccount")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult UpdateAccount(int accountId, AccountUpdateModel account)
+        public async Task<IActionResult> UpdateAccount(int accountId, AccountUpdateModel account)
         {
-            _accountRepository.UpdateAccount(accountId, account);
+            await _uow.AccountRepository.UpdateAccount(accountId, account);
             return Ok();
         }
 
@@ -50,7 +50,7 @@ namespace Webapi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAccount(AccountModel account)
         {
-            await _accountRepository.CreateAccount(account);
+            await _uow.AccountRepository.CreateAccount(account);
             return Ok();
         }
 
@@ -58,7 +58,7 @@ namespace Webapi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> CheckIfAccountExist([FromBody] LoginModel model)
         {
-            var account = await _accountRepository.CheckIfAccountExist(model);
+            var account = await _uow.AccountRepository.CheckIfAccountExist(model);
             return Ok(account);
         }
     }

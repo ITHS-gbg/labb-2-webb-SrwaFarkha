@@ -5,13 +5,11 @@ namespace Webapi.Data
 {
     public class DataContext : DbContext
     {
-        //conectar med databasen
         public DataContext(DbContextOptions options) : base(options)
         {
 
         }
 
-        //Skapar databastabell
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Account> Accounts { get; set; }

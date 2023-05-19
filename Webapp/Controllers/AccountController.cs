@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Models.AccountModels;
 using Models.OrderModels;
+using Models.ProductModels;
 using Webapp.Extensions;
 using Webapp.Interfaces;
 using Webapp.Models;
@@ -84,8 +85,6 @@ namespace Webapp.Controllers
 	                    StreetAddress = data.StreetAddress
                     }
                 };
-
-
                 await _srwasButikServices.CreateAccount(newCustomer);
             }
 
@@ -118,6 +117,52 @@ namespace Webapp.Controllers
         {
             var orders = await _srwasButikServices.GetAllOrderDetails();
             return View("AllOrders", orders);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StartUpdateAccount(AccountModel model)
+        {
+	        var accountIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+	        var accountId = Convert.ToInt32(accountIdString);
+
+	        var updateAccountModel = new AccountUpdateModel
+	        {
+		        FirstName = model.FirstName,
+		        LastName = model.LastName,
+		        PhoneNumber = model.PhoneNumber,
+		        Password = model.Password,
+		        Address = new AddressModel
+		        {
+			        City = model.City,
+			        StreetAddress = model.StreetAddress
+		        }
+	        };
+
+	        await _srwasButikServices.UpdateAccount(accountId, updateAccountModel);
+	        var accountEmailAddress = User.FindFirstValue(ClaimTypes.Email) ?? "";
+	        var accountInfo = await _srwasButikServices.GetByEmailAddress(accountEmailAddress);
+
+			return View("Index", accountInfo);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Search(string customerEmail)
+        {
+            var customers = await _srwasButikServices.GetCustomers();
+            var customerList = new List<AccountModel>();
+			foreach (var item in customers)
+            {
+                if (item.EmailAddress == customerEmail)
+                {
+                    var customer = await _srwasButikServices.GetByEmailAddress(customerEmail);
+
+                    
+                    customerList.Add(customer);
+                    return View("Customers", customerList);
+                }
+            }
+            return View("Customers", customerList);
         }
     }
 }

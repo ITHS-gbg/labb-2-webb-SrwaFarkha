@@ -26,7 +26,6 @@ namespace Webapp.Services
             };
         }
 
-        //GET products
         public async Task<List<ProductModel>> GetProducts()
         {
             var response = await _http.GetAsync($"{_baseUrl}product");
@@ -43,7 +42,6 @@ namespace Webapp.Services
             }
         }
 
-        //Hämtar en product baserat på namn
         public async Task<ProductModel> GetProductByName(string productName)
         {
             var response = await _http.GetAsync($"{_baseUrl}product/{productName}");
@@ -60,7 +58,6 @@ namespace Webapp.Services
             }
         }
 
-        //Create product
         public async Task<bool> CreateProduct(CreateNewProductModel model)
         {
             try
@@ -86,14 +83,11 @@ namespace Webapp.Services
             }
         }
 
-        //Delete product
         public async Task<bool> DeleteProduct(int productId)
         {
             try
             {
-                //var url = $"{_baseUrl}product/{productId}";
-
-                _http.BaseAddress = new Uri($"{_baseUrl}");
+	            _http.BaseAddress = new Uri($"{_baseUrl}");
 
                 var response = await _http.DeleteAsync($"product/{productId}/delete");
 
@@ -113,7 +107,6 @@ namespace Webapp.Services
             }
         }
 
-        //Update product based by id
         public async Task<bool> UpdateProduct(int productId, ProductUpdateModel product)
         {
             try
@@ -138,8 +131,6 @@ namespace Webapp.Services
             }
         }
 
-        //CUSTOMERS
-        //GET all customers
         public async Task<List<AccountModel>> GetCustomers()
         {
             var response = await _http.GetAsync($"{_baseUrl}account");
@@ -156,7 +147,6 @@ namespace Webapp.Services
             }
         }
 
-        //Hämtar en kund baserat på mail
         public async Task<AccountModel> GetByEmailAddress(string EmailAddress)
         {
             var response = await _http.GetAsync($"{_baseUrl}account/{EmailAddress}");
@@ -173,7 +163,6 @@ namespace Webapp.Services
             }
         }
 
-        //updaterar kunden baserat på id
         public async Task<bool> UpdateAccount(int accountId, AccountUpdateModel account)
         {
             try
@@ -197,9 +186,7 @@ namespace Webapp.Services
                 throw new Exception(ex.Message);
             }
         }
-
-        //Create Account
-
+        
         public async Task<bool> CreateAccount(AccountModel account)
         {
             try
@@ -225,8 +212,6 @@ namespace Webapp.Services
             }
         }
 
-        //ORDER
-        //GET all order
         public async Task<List<OrderModel>> GetAllOrderDetails()
         {
             var response = await _http.GetAsync($"{_baseUrl}order/get-all-order-details");
@@ -243,7 +228,6 @@ namespace Webapp.Services
             }
         }
 
-        //orderdetails på en specifik order by id
         public async Task<List<OrderModel>> GetOrderDetailsByAccountId(int accountId)
         {
             var response = await _http.GetAsync($"{_baseUrl}order/{accountId}/GetOrderDetailsByAccountId");
@@ -336,7 +320,6 @@ namespace Webapp.Services
             }
         }
 
-        //Create order
         public async Task<bool> CreateOrder(NewOrderInputModel newOrder)
         {
             try

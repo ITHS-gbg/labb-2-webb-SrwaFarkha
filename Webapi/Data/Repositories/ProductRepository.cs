@@ -17,10 +17,9 @@ namespace Webapi.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public List<ProductDto> GetAll()
+        public async Task<List<ProductDto>> GetAll()
         {
-            //mappa om products till productDto
-            var products = _dbContext.Products
+            var products = await _dbContext.Products
                 .Include(x => x.Category)
                 .Select(x => new ProductDto
                 {
@@ -30,14 +29,14 @@ namespace Webapi.Data.Repositories
                     Price = x.Price,
                     CategoryName = x.Category.Name,
                     Discontinued = x.Discontinued
-                }).ToList();
+                }).ToListAsync();
 
             return products;
         }
 
-        public ProductDto GetByName(string name)
+        public async Task<ProductDto> GetByName(string name)
         {
-            var product = _dbContext.Products.Include(x => x.Category).FirstOrDefault(x => x.ProductName ==  name);
+            var product = await _dbContext.Products.Include(x => x.Category).FirstOrDefaultAsync(x => x.ProductName ==  name);
 
             var productDto = new ProductDto
             {
@@ -52,9 +51,9 @@ namespace Webapi.Data.Repositories
             return productDto;
         }
 
-        public ProductDto GetById(int productId)
+        public async Task<ProductDto> GetById(int productId)
         {
-            var product = _dbContext.Products.Include(x => x.Category).FirstOrDefault(x => x.ProductId == productId);
+            var product = await _dbContext.Products.Include(x => x.Category).FirstOrDefaultAsync(x => x.ProductId == productId);
             
             var productDto = new ProductDto
             {
@@ -66,10 +65,10 @@ namespace Webapi.Data.Repositories
                     Discontinued = product.Discontinued
             };
 
-                return productDto;
+	        return productDto;
         }
 
-        public void CreateProduct(CreateProductModel product)
+        public async Task CreateProduct(CreateProductModel product)
         {
             var newProduct = new Product
             {
@@ -80,41 +79,40 @@ namespace Webapi.Data.Repositories
                 Discontinued = false,
             };
 
-
             _dbContext.Products.Add(newProduct);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void DeleteProduct(int id)
+        public async Task DeleteProduct(int id)
         {
-            var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == id);
+            var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.ProductId == id);
             _dbContext.Products.Remove(product);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void UpdateProduct(int productId, ProductUpdateModel update)
+        public async Task UpdateProduct(int productId, ProductUpdateModel update)
         {
-            var productFromDb = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId);
+            var productFromDb = await _dbContext.Products.FirstOrDefaultAsync(x => x.ProductId == productId);
             if (productFromDb != null)
             {
                 productFromDb.ProductName = update.ProductName;
                 productFromDb.ProductDescription = update.ProductDescription;
                 productFromDb.Price = update.Price;
-                _dbContext.SaveChanges();
+                productFromDb.Discontinued = update.Discontinued;
+                await _dbContext.SaveChangesAsync();
             }
         }
 
-        public List<Category> GetCategories()
+        public async Task<List<Category>> GetCategories()
         {
-            var categories = _dbContext.Categories.ToList();
-
+            var categories = await _dbContext.Categories.ToListAsync();
             return categories;
         }
 
-        public Category GetCategoryById(int categoryId)
+        public async Task<Category> GetCategoryById(int categoryId)
         {
-            var category = _dbContext.Categories
-                .FirstOrDefault(x => x.Id == categoryId);
+            var category = await _dbContext.Categories
+                .FirstOrDefaultAsync(x => x.Id == categoryId);
 
             return category;
         }

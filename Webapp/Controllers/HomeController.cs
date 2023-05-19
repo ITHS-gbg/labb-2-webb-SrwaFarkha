@@ -9,13 +9,10 @@ namespace Webapp.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly ISrwasButikServices _srwasButikServices;
 
-
-    public HomeController(ILogger<HomeController> logger, ISrwasButikServices srwasButikServices)
+    public HomeController(ISrwasButikServices srwasButikServices)
     {
-        _logger = logger;
         _srwasButikServices = srwasButikServices;
     }
 
@@ -30,7 +27,6 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-
 
     public IActionResult ContactUs()
     {

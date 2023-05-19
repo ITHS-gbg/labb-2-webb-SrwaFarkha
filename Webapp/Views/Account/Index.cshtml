@@ -24,40 +24,45 @@
 }
 </ul>
 </div>
+<form asp-controller="Account" asp-action="StartUpdateAccount" method="POST">
+	<div class="info">
+		<h3>Profilinställningar</h3>
 
-<div class="info">
-	<h3>Profilinställningar</h3>
+		<div class="mb-3">
+			<label asp-for="FirstName" class="form-label">Namn:</label>
+			<input asp-for="FirstName" type="text" id="FirstName" class="form-control" placeholder="@Model.FirstName"/>
 
-	<div class="mb-3">
-		<label for="FirstName" class="form-label">Namn:</label>
-		<input type="text" id="FirstName" @Model.FirstName class="form-control" placeholder="@Model.FirstName"/>
+		</div>
+		<div class="mb-3">
+			<label asp-for="LastName" class="form-label">Efternamn:</label>
+			<input asp-for="LastName" type="text" id="LastName" class="form-control" placeholder="@Model.LastName"/>
+
+		</div>
+		<div class="mb-3">
+			<label asp-for="EmailAddress" class="form-label">Email:</label>
+			<input asp-for="EmailAddress" type="text" id="Email" class="form-control" placeholder="@Model.EmailAddress"/>
+		</div>
+		<div class="mb-3">
+			<label asp-for="Password" class="form-label">Lösenord:</label>
+			<input asp-for="Password" type="password" id="Password" class="form-control" placeholder="@Model.Password"/>
+		</div>
+		<div class="mb-3">
+			<label asp-for="PhoneNumber" class="form-label">Telefon nummer:</label>
+			<input asp-for="PhoneNumber" type="text" id="PhoneNumber" class="form-control" placeholder="@Model.PhoneNumber" />
+		</div>
+		<div class="mb-3">
+			<label asp-for="City" class="form-label">Stad:</label>
+			<input asp-for="City" type="text" id="City" class="form-control" placeholder="@Model.City"/>
+		</div>
+		<div class="mb-3">
+			<label asp-for="StreetAddress" class="form-label">Adress:</label>
+			<input asp-for="StreetAddress" type="text" id="StreetAddress" class="form-control" placeholder="@Model.StreetAddress"/>
+		</div>
 
 	</div>
-	<div class="mb-3">
-		<label for="LastName" class="form-label">Efternamn:</label>
-		<input type="text" id="LastName" @Model.LastName class="form-control" placeholder="@Model.LastName"/>
 
-	</div>
-	<div class="mb-3">
-		<label for="Email" class="form-label">Email:</label>
-		<input type="text" id="Email" @Model.EmailAddress class="form-control" placeholder="@Model.EmailAddress"/>
-	</div>
-	<div class="mb-3">
-		<label for="PhoneNumber" class="form-label">Telefon nummer:</label>
-		<input type="text" id="PhoneNumber" @Model.PhoneNumber class="form-control" placeholder="@Model.PhoneNumber" />
-	</div>
-	<div class="mb-3">
-		<label for="City" class="form-label">Stad:</label>
-		<input type="text" id="City" @Model.City class="form-control" placeholder="@Model.City"/>
-	</div>
-	<div class="mb-3">
-		<label for="Address" class="form-label">Adress:</label>
-		<input type="text" id="Address" @Model.StreetAddress class="form-control" placeholder="@Model.StreetAddress"/>
-	</div>
-
-</div>
-
-<button type="submit" class="spara-andringar btn btn-primary">Spara Ändringar</button>
+	<button type="submit" class="spara-andringar btn btn-primary">Spara Ändringar</button>
+</form>
 
 <style>
 	

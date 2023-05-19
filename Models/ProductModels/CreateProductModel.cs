@@ -5,5 +5,4 @@ public class CreateProductModel
         public string ProductDescription { get; set; }
         public decimal Price { get; set; }
         public CreateCategoryModel Category { get; set; }
-        public bool Discontinued { get; set; }
 }

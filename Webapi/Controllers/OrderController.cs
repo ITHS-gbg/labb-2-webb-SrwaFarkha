@@ -12,34 +12,34 @@ namespace Webapi.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderRepository _orderRepository;
+		private readonly IUnitOfWork _uow;
 
-        public OrderController(IOrderRepository orderRepository)
-        {
-            _orderRepository = orderRepository;
-        }
+		public OrderController(IUnitOfWork uow)
+		{
+			_uow = uow;
+		}
 
-        [HttpGet("{accountId:int}/GetOrderDetailsByAccountId")]
+		[HttpGet("{accountId:int}/GetOrderDetailsByAccountId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetOrderDetailsByAccountId(int accountId)
         {
-            var result = await _orderRepository.GetOrderDetailsByAccountId(accountId);
+            var result = await _uow.OrderRepository.GetOrderDetailsByAccountId(accountId);
             return Ok(result);
         }
 
         [HttpGet("get-all-order-details")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<OrderDto>> GetAllOrderDetails()
+        public async Task<IActionResult> GetAllOrderDetails()
         {
-            var result = _orderRepository.GetAllOrderDetails();
+            var result = await _uow.OrderRepository.GetAllOrderDetails();
             return Ok(result);
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult CreateOrder(NewOrderInputModel newOrder)
+        public async Task<IActionResult> CreateOrder(NewOrderInputModel newOrder)
         {
-            _orderRepository.CreateOrder(newOrder);
+            await _uow.OrderRepository.CreateOrder(newOrder);
             
             return Ok();
         }

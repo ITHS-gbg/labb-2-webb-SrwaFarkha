@@ -7,7 +7,7 @@ namespace Webapi.Data.Repositories.Interfaces
     {
 	    Task<List<OrderDto>> GetOrderDetailsByAccountId(int accountId);
 
-		public List<OrderDto> GetAllOrderDetails();
+		Task<List<OrderDto>> GetAllOrderDetails();
 		Task CreateOrder(NewOrderInputModel newNewOrder);
 
     }

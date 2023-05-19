@@ -39,7 +39,7 @@
         <th>Beskrivning</th>
         <th>Pris </th>
         <th>Kategori</th>
-	    <th>Status</th>
+	    <th>I lager</th>
     @if (User.FindFirstValue(ClaimTypes.Role) == "True")
     {
 	    <th></th>
@@ -57,14 +57,24 @@
 		    <td>@item.ProductDescription</td>
 		    <td>@item.Price</td>
 		    <td>@item.CategoryName</td>
-		    <td>@item.Discontinued</td>
+            
+            @if (item.Discontinued)
+            {
+	            <td>Nej</td>
+            }
+            else
+            {
+	            <td>Ja</td>
+
+            }
+		    
 
 		    @if (User.FindFirstValue(ClaimTypes.Role) == "True")
 		    {
 			    <th style="text-align: center;"><a asp-action="Delete" asp-route-productId="@item.ProductId"><i class="btn btn-danger">Ta bort</i></a></th>
 			    <th style="text-align: center;"><a asp-action="Edit" asp-route-productId="@item.ProductId"><i class="btn btn-primary">Editera</i></a></th>
 		    }
-            @if (User.Identity.IsAuthenticated)
+            @if (User.Identity.IsAuthenticated && !@item.Discontinued)
             {
 	            <th style="text-align: center;"><a asp-action="AddToCart" asp-route-productId="@item.ProductId"><i class="btn btn-success">Lägg till i varukorg</i></a></th>
             }
