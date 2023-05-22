@@ -44,19 +44,19 @@
 		</div>
 		<div class="mb-3">
 			<label asp-for="Password" class="form-label">Lösenord:</label>
-			<input asp-for="Password" type="password" id="Password" class="form-control" placeholder="@Model.Password"/>
+			<input asp-for="Password" type="text" id="Password" class="form-control" placeholder="@Model.Password"/>
 		</div>
 		<div class="mb-3">
 			<label asp-for="PhoneNumber" class="form-label">Telefon nummer:</label>
 			<input asp-for="PhoneNumber" type="text" id="PhoneNumber" class="form-control" placeholder="@Model.PhoneNumber" />
 		</div>
 		<div class="mb-3">
-			<label asp-for="City" class="form-label">Stad:</label>
-			<input asp-for="City" type="text" id="City" class="form-control" placeholder="@Model.City"/>
+			<label asp-for="Address.City" class="form-label">Stad:</label>
+			<input asp-for="Address.City" type="text" id="City" class="form-control" placeholder="@Model.Address.City" />
 		</div>
 		<div class="mb-3">
-			<label asp-for="StreetAddress" class="form-label">Adress:</label>
-			<input asp-for="StreetAddress" type="text" id="StreetAddress" class="form-control" placeholder="@Model.StreetAddress"/>
+			<label asp-for="Address.StreetAddress" class="form-label">Adress:</label>
+			<input asp-for="Address.StreetAddress" type="text" id="StreetAddress" class="form-control" placeholder="@Model.Address.StreetAddress" />
 		</div>
 
 	</div>

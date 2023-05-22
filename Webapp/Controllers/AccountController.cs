@@ -133,8 +133,8 @@ namespace Webapp.Controllers
 		        Password = model.Password,
 		        Address = new AddressModel
 		        {
-			        City = model.City,
-			        StreetAddress = model.StreetAddress
+			        City = model.Address.City,
+			        StreetAddress = model.Address.StreetAddress
 		        }
 	        };
 
