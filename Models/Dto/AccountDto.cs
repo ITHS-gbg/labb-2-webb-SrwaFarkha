@@ -11,6 +11,5 @@
         public string City { get; set; }
         public string StreetAddress { get; set; }
 
-        //public AddressDto Address { get; set; }
     }
 }
